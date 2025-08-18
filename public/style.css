@@ -1,11 +1,13 @@
 body {
   font-family: 'Quicksand', sans-serif;
-  background: #f9f9ff;
+  background: url("background.png") no-repeat center center fixed;
+  background-size: cover;
   display: flex;
   flex-direction: column;
   min-height: 100vh;
   margin: 0;
 }
+
 
 .container {
   flex: 1;
