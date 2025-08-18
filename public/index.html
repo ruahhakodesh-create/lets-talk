@@ -10,19 +10,19 @@
   <meta name="theme-color" content="#7c3aed" />
 </head>
 <body>
-  <!-- HERO z centralnym hasłem -->
+  <!-- CENTRALNY HERO -->
   <header class="hero">
-    <h1>Let’s Talk</h1>
+    <h1 class="logo">Let’s Talk</h1>
   </header>
 
   <main class="container">
-    <!-- intro, wycentrowane -->
+    <!-- Intro -->
     <section id="intro" class="card intro">
       <p data-i18n="motto">Rozmowa z żywym człowiekiem. Anonimowo. Bez kont. Wiadomości znikają po zamknięciu okna.</p>
       <p class="sub" data-i18n="sub">Tylko tekst. Bez linków i multimediów.</p>
     </section>
 
-    <!-- wejście -->
+    <!-- Wejście -->
     <section id="entry" class="card">
       <h2 data-i18n="enter">Wejdź</h2>
       <div class="grid">
@@ -40,7 +40,7 @@
       <p class="hint" data-i18n="hint">Rekomendowane 18+. Korzystasz na własną odpowiedzialność.</p>
     </section>
 
-    <!-- lobby -->
+    <!-- Lobby -->
     <section id="lobby" class="card hidden">
       <div class="lobby-top">
         <h2 data-i18n="lobby">Wybierz rozmówcę</h2>
@@ -50,7 +50,7 @@
       <p class="hint" data-i18n="inviteHint">Kliknij kafelek lub „Zaproś”.</p>
     </section>
 
-    <!-- chat -->
+    <!-- Czat -->
     <section id="chat" class="card hidden">
       <div class="chat-top">
         <div id="peer">—</div>
@@ -64,7 +64,7 @@
     </section>
   </main>
 
-  <!-- stopka z linkami (małe, z odstępem) -->
+  <!-- Stopka z linkami -->
   <footer class="footer">
     <small>© Let's Talk</small>
     <nav>
@@ -74,7 +74,7 @@
     </nav>
   </footer>
 
-  <!-- przycisk skrótu/PWA -->
+  <!-- Przycisk skrótu/PWA -->
   <button id="installBtn" class="install">Dodaj skrót</button>
 
   <script src="/socket.io/socket.io.js"></script>
