@@ -13,9 +13,10 @@ joinForm.addEventListener("submit", (e)=>{
   if (!purpose) { alert("Wybierz cel rozmowy."); return; }
 
   // Schowaj panele wejściowe, pokaż czat
-  introSection.classList.add("hidden");
-  formSection.classList.add("hidden");
-  chatSection.classList.remove("hidden");
+  intro.classList.add('hidden');
+  form.classList.add('hidden');
+  chat.classList.remove('hidden');
+
 
   // Powitalna wiadomość w czacie
   const messages = document.getElementById("messages");
