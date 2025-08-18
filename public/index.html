@@ -4,56 +4,60 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Let's Talk</title>
-  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <!-- Font zgodny z style.css -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="container">
 
-    <!-- Panel wprowadzający: JEDEN akapit, łatwy do tłumaczenia -->
-    <section class="intro card">
-      <p class="intro-text">
-        Czujesz się samotny, wstydzisz się kontaktu, szukasz towarzystwa do rozmowy, potrzebujesz pocieszenia lub wsparcia, chcesz wymienić się doświadczeniami lub po prostu poznać nowe osoby — w tym miejscu możesz rozmawiać całkowicie anonimowo. Bez logowania, rejestracji ani zbierania danych. W każdej chwili możesz zakończyć rozmowę, a cała jej treść i wszystkie elementy znikają natychmiast. Najważniejsze: rozmawiasz zawsze w swoim języku — wszystkie rozmowy są tłumaczone.
-      </p>
-    </section>
+  <!-- Panel wprowadzający: jeden akapit, łatwy do tłumaczenia z poziomu przeglądarki -->
+  <section class="panel" id="intro">
+    <p>
+      Czujesz się samotny, wstydzisz się kontaktu, szukasz towarzystwa do rozmowy, potrzebujesz pocieszenia lub wsparcia,
+      chcesz wymienić się doświadczeniami lub po prostu poznać nowe osoby — w tym miejscu możesz rozmawiać całkowicie anonimowo.
+      Bez logowania, rejestracji ani zbierania danych. W każdej chwili możesz zakończyć rozmowę, a cała jej treść oraz wszystkie
+      elementy znikają natychmiast. Najważniejsze: rozmawiasz zawsze w swoim języku — wszystkie rozmowy są tłumaczone.
+    </p>
+  </section>
 
-    <!-- Formularz startowy -->
-    <section class="form card">
-      <form id="joinForm" autocomplete="off">
-        <label for="nickname">Twój pseudonim</label>
-        <input type="text" id="nickname" name="nickname" placeholder="np. Luna" required />
+  <!-- Formularz startowy -->
+  <section class="panel" id="form">
+    <form id="joinForm" autocomplete="off">
+      <label for="nickname">Twój pseudonim</label>
+      <input type="text" id="nickname" name="nickname" placeholder="np. Luna" required />
 
-        <label for="purpose">Cel rozmowy</label>
-        <select id="purpose" name="purpose" required>
-          <option value="" selected>Wybierz cel rozmowy</option>
-          <option value="relacje">Nawiązanie relacji</option>
-          <option value="wsparcie">Szukam wsparcia</option>
-          <option value="doswiadczenia">Wymiana doświadczeń</option>
-        </select>
+      <label for="purpose">Cel rozmowy</label>
+      <select id="purpose" name="purpose" required>
+        <option value="" selected>Wybierz cel rozmowy</option>
+        <option value="relacje">Nawiązanie relacji</option>
+        <option value="wsparcie">Szukam wsparcia</option>
+        <option value="doswiadczenia">Wymiana doświadczeń</option>
+      </select>
 
-        <button type="submit">Rozpocznij rozmowę</button>
-      </form>
-    </section>
+      <button type="submit">Rozpocznij rozmowę</button>
+    </form>
+  </section>
 
-    <!-- Okno czata (mniejsze) -->
-    <section id="chat" class="chat card hidden">
-      <div id="messages"></div>
-      <form id="chatForm" autocomplete="off">
-        <input type="text" id="messageInput" placeholder="Napisz wiadomość…" required />
-        <button type="submit">Wyślij</button>
-      </form>
-    </section>
-  </div>
+  <!-- Okno czata (pokaże się po starcie rozmowy) -->
+  <section class="panel hidden" id="chat">
+    <div id="messages"></div>
+    <form id="chatForm" autocomplete="off">
+      <input type="text" id="messageInput" placeholder="Napisz wiadomość…" required />
+      <button type="submit">Wyślij</button>
+    </form>
+  </section>
 
-  <!-- Stopka zawsze widoczna, czarny kolor, tło pod linkami -->
+  <!-- Stopka pod czatem -->
   <footer class="footer">
-    <nav>
-      <a href="terms.html" target="_blank">Regulamin</a>
-      <span class="sep">|</span>
-      <a href="privacy.html" target="_blank">Polityka prywatności</a>
-    </nav>
+    <a href="terms.html" target="_blank" rel="noopener">Regulamin</a>
+    <span class="sep">|</span>
+    <a href="privacy.html" target="_blank" rel="noopener">Polityka prywatności</a>
   </footer>
 
   <script src="app.js"></script>
 </body>
 </html>
+.hidden { display: none; }
+ 
