@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <title>Let's Talk</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="entry">
+    <h1>Let's Talk</h1>
+    <form id="joinForm">
+      <label>Nick: <input name="nick" required></label>
+      <label>Wiek: <input name="age" required></label>
+      <label>Kraj: <input name="country" required></label>
+      <button type="submit">Wejdź</button>
+    </form>
+  </div>
+
+  <div id="lobby" class="hidden">
+    <h2>Lobby</h2>
+    <ul id="userList"></ul>
+  </div>
+
+  <div id="chat" class="hidden">
+    <h2>Rozmowa z <span id="peerName"></span></h2>
+    <div id="messages"></div>
+    <form id="msgForm">
+      <input id="msgInput" autocomplete="off">
+      <button type="submit">Wyślij</button>
+    </form>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
