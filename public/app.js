@@ -1,66 +1,77 @@
 const socket = io();
 let peerId = null;
 
-document.getElementById("joinForm").onsubmit = (e) => {
+const $ = (s) => document.querySelector(s);
+const entry = $("#entry");
+const lobby = $("#lobby");
+const chat = $("#chat");
+const userList = $("#userList");
+const peerName = $("#peerName");
+const messages = $("#messages");
+
+// wejście z profilem
+$("#joinForm").onsubmit = (e) => {
   e.preventDefault();
-  const form = e.target;
-  const data = {
-    nick: form.nick.value,
-    age: form.age.value,
-    country: form.country.value
-  };
-  socket.emit("join", data);
-  document.getElementById("entry").classList.add("hidden");
-  document.getElementById("lobby").classList.remove("hidden");
+  const f = e.target;
+  socket.emit("join", { nick: f.nick.value, age: f.age.value, country: f.country.value });
+  entry.classList.add("hidden");
+  lobby.classList.remove("hidden");
 };
 
-socket.on("users", (users) => {
-  const list = document.getElementById("userList");
-  list.innerHTML = "";
-  users.forEach(u => {
-    if (u.id !== socket.id) {
-      const li = document.createElement("li");
-      li.textContent = `${u.nick} (${u.age}, ${u.country})`;
-      li.onclick = () => socket.emit("invite", u.id);
-      list.appendChild(li);
-    }
+// lista dostępnych w lobby
+socket.on("users", (list) => {
+  userList.innerHTML = "";
+  list.forEach(u => {
+    const li = document.createElement("li");
+    li.textContent = `${u.nick} (${u.age}, ${u.country})`;
+    li.onclick = () => socket.emit("invite", u.id);
+    userList.appendChild(li);
   });
 });
 
+// ktoś mnie zaprosił
 socket.on("invited", (user) => {
   if (confirm(`Rozmowa z ${user.nick}?`)) {
     socket.emit("accept", user.id);
-    startChat(user);
   }
 });
 
-socket.on("accepted", (user) => {
-  startChat(user);
+// para gotowa
+socket.on("paired", (user) => {
+  peerId = user.id;
+  lobby.classList.add("hidden");
+  chat.classList.remove("hidden");
+  peerName.textContent = user.nick;
+  messages.innerHTML = "";
 });
 
-function startChat(user) {
-  peerId = user.id;
-  document.getElementById("lobby").classList.add("hidden");
-  document.getElementById("chat").classList.remove("hidden");
-  document.getElementById("peerName").textContent = user.nick;
-}
-
-document.getElementById("msgForm").onsubmit = (e) => {
+// wysyłanie wiadomości
+$("#msgForm").onsubmit = (e) => {
   e.preventDefault();
-  const input = document.getElementById("msgInput");
-  socket.emit("message", { to: peerId, text: input.value });
-  addMessage("Ja", input.value);
+  const input = $("#msgInput");
+  const text = input.value.trim();
+  if (!text) return;
+  socket.emit("message", text);
+  addMsg("Ja", text);
   input.value = "";
 };
 
+// odbiór wiadomości
 socket.on("message", (msg) => {
-  addMessage("On/ona", msg.text);
+  addMsg("Rozmówca", msg.text);
 });
 
-function addMessage(who, text) {
-  const div = document.getElementById("messages");
+// koniec rozmowy
+$("#endBtn").onclick = () => socket.emit("end");
+socket.on("ended", () => {
+  chat.classList.add("hidden");
+  lobby.classList.remove("hidden");
+  peerId = null;
+});
+
+function addMsg(who, text){
   const p = document.createElement("p");
   p.textContent = `${who}: ${text}`;
-  div.appendChild(p);
-  div.scrollTop = div.scrollHeight;
+  messages.appendChild(p);
+  messages.scrollTop = messages.scrollHeight;
 }
