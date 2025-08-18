@@ -1,48 +1,44 @@
-// Logika widoczności: najpierw intro+formularz, po starcie czat
-const joinForm = document.getElementById("joinForm");
-const chatSection = document.getElementById("chat");
-const introSection = document.querySelector(".intro");
-const formSection  = document.querySelector(".form");
+// Sekcje
+const intro = document.getElementById('intro');
+const start = document.getElementById('start');
+const chat  = document.getElementById('chat');
 
-joinForm.addEventListener("submit", (e)=>{
+// Start rozmowy
+document.getElementById('joinForm').addEventListener('submit', e=>{
   e.preventDefault();
-  const nick = document.getElementById("nickname").value.trim();
-  const purpose = document.getElementById("purpose").value;
+  const nick = document.getElementById('nickname').value.trim();
+  const purpose = document.getElementById('purpose').value;
 
-  if (!nick) { alert("Podaj pseudonim."); return; }
-  if (!purpose) { alert("Wybierz cel rozmowy."); return; }
+  if(!nick){ alert('Podaj pseudonim.'); return; }
+  if(!purpose){ alert('Wybierz cel rozmowy.'); return; }
 
-  // Schowaj panele wejściowe, pokaż czat
   intro.classList.add('hidden');
-  form.classList.add('hidden');
+  start.classList.add('hidden');
   chat.classList.remove('hidden');
 
-
-  // Powitalna wiadomość w czacie
-  const messages = document.getElementById("messages");
-  const hello = document.createElement("div");
-  hello.style.fontStyle = "italic";
-  hello.textContent = `Rozpoczynasz rozmowę jako „${nick}” (cel: ${opisCelu(purpose)}).`;
-  messages.appendChild(hello);
+  const msg = document.createElement('div');
+  msg.style.fontStyle='italic';
+  msg.textContent = `Rozpoczynasz rozmowę jako „${nick}” (cel: ${opisCelu(purpose)}).`;
+  document.getElementById('messages').appendChild(msg);
 });
 
-// Prosty czat lokalny (UI). Backend możesz podpiąć później.
-document.getElementById("chatForm").addEventListener("submit",(e)=>{
+// Prosty czat UI (placeholder)
+document.getElementById('chatForm').addEventListener('submit', e=>{
   e.preventDefault();
-  const input = document.getElementById("messageInput");
-  const txt = input.value.trim();
-  if (!txt) return;
-  const messages = document.getElementById("messages");
-  const bubble = document.createElement("div");
-  bubble.textContent = txt;
-  messages.appendChild(bubble);
-  input.value = "";
-  messages.scrollTop = messages.scrollHeight;
+  const input = document.getElementById('messageInput');
+  const text = input.value.trim();
+  if(!text) return;
+  const div = document.createElement('div');
+  div.textContent = text;
+  document.getElementById('messages').appendChild(div);
+  input.value='';
+  const box = document.getElementById('messages');
+  box.scrollTop = box.scrollHeight;
 });
 
 function opisCelu(v){
-  if (v==="relacje") return "Nawiązanie relacji";
-  if (v==="wsparcie") return "Szukam wsparcia";
-  if (v==="doswiadczenia") return "Wymiana doświadczeń";
+  if(v==='relacje') return 'Nawiązanie relacji';
+  if(v==='wsparcie') return 'Szukam wsparcia';
+  if(v==='doswiadczenia') return 'Wymiana doświadczeń';
   return v;
 }
