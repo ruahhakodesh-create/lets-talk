@@ -92,22 +92,17 @@ button:active{transform:translateY(1px)}
 #chatForm button{white-space:nowrap}
 
 /* Stopka – wraca pod czat */
-.footer{
-  width:100%;
-  text-align:center;
-  margin-top:28px;
-  font-size:15px;
-}
 .footer a{
-  color:var(--ink);            /* mocny kontrast */
+  color:var(--ink);            /* ciemny fiolet */
   text-decoration:underline;
   font-weight:600;
+  transition:color .2s ease, filter .2s ease;
 }
-.footer .sep{color:var(--ink);margin:0 8px}
-.hidden{display:none}
-
-@media (max-width:520px){
-  .container{gap:28px;padding-top:48px}
-  .card{padding:22px}
-  #messages{height:240px}
+.footer a:hover{
+  color:var(--btn2);           /* róż */
+  filter:brightness(1.2);      /* lekkie rozjaśnienie */
+}
+.footer .sep{
+  color:var(--ink);
+  margin:0 8px;
 }
