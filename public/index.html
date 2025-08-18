@@ -1,39 +1,31 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Let's Talk</title>
   <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="container">
 
-    <!-- Panel powitalny -->
+    <!-- Panel wprowadzający: JEDEN akapit, łatwy do tłumaczenia -->
     <section class="intro card">
-      <p>
-        Czujesz się samotny, wstydzisz się kontaktu, szukasz towarzystwa do rozmowy,
-        potrzebujesz pocieszenia lub wsparcia, chcesz wymienić się doświadczeniami
-        lub po prostu poznać nowe osoby – w tym miejscu możesz rozmawiać zupełnie anonimowo.
-      </p>
-      <p>
-        Bez logowania, rejestracji, zbierania twoich danych. W każdej chwili możesz zakończyć rozmowę,
-        a cała jej treść i wszystkie jej ślady natychmiast znikną.
-      </p>
-      <p>
-        I co najważniejsze – rozmawiasz zawsze w swoim języku. Wszystkie rozmowy są tłumaczone.
+      <p class="intro-text">
+        Czujesz się samotny, wstydzisz się kontaktu, szukasz towarzystwa do rozmowy, potrzebujesz pocieszenia lub wsparcia, chcesz wymienić się doświadczeniami lub po prostu poznać nowe osoby — w tym miejscu możesz rozmawiać całkowicie anonimowo. Bez logowania, rejestracji ani zbierania danych. W każdej chwili możesz zakończyć rozmowę, a cała jej treść i wszystkie elementy znikają natychmiast. Najważniejsze: rozmawiasz zawsze w swoim języku — wszystkie rozmowy są tłumaczone.
       </p>
     </section>
 
     <!-- Formularz startowy -->
     <section class="form card">
-      <form id="joinForm">
-        <label for="nickname">Twój pseudonim:</label>
-        <input type="text" id="nickname" name="nickname" required>
+      <form id="joinForm" autocomplete="off">
+        <label for="nickname">Twój pseudonim</label>
+        <input type="text" id="nickname" name="nickname" placeholder="np. Luna" required />
 
-        <label for="purpose">Cel rozmowy:</label>
-        <select id="purpose" name="purpose">
+        <label for="purpose">Cel rozmowy</label>
+        <select id="purpose" name="purpose" required>
+          <option value="" selected>Wybierz cel rozmowy</option>
           <option value="relacje">Nawiązanie relacji</option>
           <option value="wsparcie">Szukam wsparcia</option>
           <option value="doswiadczenia">Wymiana doświadczeń</option>
@@ -43,19 +35,23 @@
       </form>
     </section>
 
-    <!-- Okno czata -->
+    <!-- Okno czata (mniejsze) -->
     <section id="chat" class="chat card hidden">
       <div id="messages"></div>
-      <form id="chatForm">
-        <input type="text" id="messageInput" placeholder="Napisz wiadomość..." required>
+      <form id="chatForm" autocomplete="off">
+        <input type="text" id="messageInput" placeholder="Napisz wiadomość…" required />
         <button type="submit">Wyślij</button>
       </form>
     </section>
-
   </div>
 
-  <footer>
-    <a href="#">Regulamin</a> | <a href="#">Polityka prywatności</a>
+  <!-- Stopka zawsze widoczna, czarny kolor, tło pod linkami -->
+  <footer class="footer">
+    <nav>
+      <a href="terms.html" target="_blank">Regulamin</a>
+      <span class="sep">|</span>
+      <a href="privacy.html" target="_blank">Polityka prywatności</a>
+    </nav>
   </footer>
 
   <script src="app.js"></script>
