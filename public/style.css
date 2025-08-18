@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap');
 
 :root{
   --text:#1f2937; --muted:#6b7280;
@@ -12,27 +12,36 @@ html,body{margin:0}
 body{
   font-family:'Poppins',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
   color:var(--text);
-  /* JEDEN obraz w tle, bez mozaiki */
-  background: url("bg-tile.png") center/cover fixed no-repeat;
+  background:url("bg-tile.png") center/cover fixed no-repeat;
 }
 
-/* layout */
-.header,.footer{max-width:1100px;margin:0 auto;padding:16px;display:flex;justify-content:space-between;align-items:center}
+/* HEADER */
+.header{max-width:1100px;margin:0 auto;padding:16px 18px;
+  display:flex;align-items:center;justify-content:space-between}
+.brand{
+  margin:0 auto; text-align:center; width:100%;
+}
+.brand h1{
+  margin:0; font-size:40px; font-weight:800; letter-spacing:.5px;
+  background:linear-gradient(135deg,var(--primary2),var(--primary));
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+}
+nav{display:flex;gap:16px}        /* odstęp między linkami */
+nav a{text-decoration:underline;color:#111827}
+
+/* LAYOUT */
 .container{max-width:1100px;margin:0 auto;padding:18px;display:grid;gap:16px}
 .card{
-  background:var(--glass);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border:1px solid var(--line);
-  border-radius:24px;
-  padding:22px;
-  box-shadow:0 10px 30px rgba(0,0,0,.08);
+  background:var(--glass); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
+  border:1px solid var(--line); border-radius:24px; padding:24px; box-shadow:0 10px 30px rgba(0,0,0,.08)
 }
 
-h1{font-size:28px;margin:0}
-h2{font-size:24px;margin:.2rem 0 1rem}
-p{font-size:16px;color:var(--muted)}
+/* Intro – wycentrowane większe litery */
+.intro{text-align:center}
+.intro p{font-size:18px}
+.intro .sub{color:var(--muted);font-size:14px}
 
+/* Form */
 .grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
 label{font-size:14px;color:#374151}
 input{
@@ -45,14 +54,10 @@ button{
   padding:12px 18px;font-weight:600;font-size:16px;cursor:pointer;
   transition:transform .05s, filter .15s, box-shadow .15s
 }
-button:hover{filter:brightness(1.05)}
-button:active{transform:translateY(1px)}
+button:hover{filter:brightness(1.05)} button:active{transform:translateY(1px)}
 button.secondary{background:#0ea5e9}
 
-.hidden{display:none}
-.hint{color:var(--muted);font-size:13px}
-
-/* LOBBY */
+/* Lobby */
 .lobby-top{display:flex;justify-content:space-between;align-items:center}
 #me{color:var(--muted);font-size:14px}
 .list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
@@ -63,59 +68,27 @@ button.secondary{background:#0ea5e9}
 }
 .item:hover{box-shadow:0 8px 22px rgba(16,24,40,.10);border-color:#dbe2f1}
 .item:active{transform:translateY(1px)}
-.item button{margin-left:8px}
 .item button.invited{background:#10b981}
 
-/* CZAT – „artystyczne” okno i dymki */
-.chat-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
-#peer{font-weight:700;font-size:18px}
-
-/* balonowe tło logu czatu (płynny kształt) */
+/* Chat dymki */
 #log{
-  position:relative;
-  padding:18px;
-  height:56vh; overflow:auto;
-  background: radial-gradient(1200px 400px at -10% 120%, rgba(124,58,237,.10), transparent),
-              radial-gradient(800px 300px at 120% -10%, rgba(59,130,246,.10), transparent),
-              #ffffff;
-  border:1px solid var(--line);
-  border-radius:28px;
+  position:relative;padding:18px;height:56vh;overflow:auto;background:#ffffff;
+  border:1px solid var(--line);border-radius:28px
 }
-
-/* wiadomości jako dymki z ogonkiem */
 .msg{display:flex;margin:10px 0}
-.msg .bubble{
-  position:relative;max-width:70ch;padding:10px 14px;border-radius:18px;word-wrap:break-word;font-size:16px
-}
+.msg .bubble{position:relative;max-width:70ch;padding:10px 14px;border-radius:18px;word-wrap:break-word;font-size:16px}
 .msg.me{justify-content:flex-end}
-.msg.me .bubble{
-  background:linear-gradient(135deg,var(--primary2),var(--primary));color:#fff
-}
-.msg.peer .bubble{
-  background:#eef2ff;border:1px solid #e0e7ff;color:#111827
-}
-/* ogonki */
-.msg.me .bubble::after{
-  content:"";position:absolute;right:-8px;bottom:6px;width:16px;height:16px;
-  background:linear-gradient(135deg,var(--primary2),var(--primary));
-  border-bottom-left-radius:16px;transform:skewX(-25deg)
-}
-.msg.peer .bubble::after{
-  content:"";position:absolute;left:-8px;bottom:6px;width:16px;height:16px;background:#eef2ff;
-  border:1px solid #e0e7ff;border-right:none;border-top:none;border-bottom-left-radius:16px;transform:skewX(25deg)
-}
-
+.msg.me .bubble{background:linear-gradient(135deg,var(--primary2),var(--primary));color:#fff}
+.msg.peer .bubble{background:#eef2ff;border:1px solid #e0e7ff;color:#111827}
+.msg.me .bubble::after{content:"";position:absolute;right:-8px;bottom:6px;width:16px;height:16px;background:linear-gradient(135deg,var(--primary2),var(--primary));border-bottom-left-radius:16px;transform:skewX(-25deg)}
+.msg.peer .bubble::after{content:"";position:absolute;left:-8px;bottom:6px;width:16px;height:16px;background:#eef2ff;border:1px solid #e0e7ff;border-right:none;border-top:none;border-bottom-left-radius:16px;transform:skewX(25deg)}
 #sendForm{display:flex;gap:8px;margin-top:12px}
 #sendForm input{flex:1}
 
-/* przycisk instalacji PWA */
-#installBtn{
-  position:fixed;right:16px;bottom:16px;z-index:10;display:none;
-  background:#10b981;color:#053321
-}
+/* PWA button */
+#installBtn{position:fixed;right:16px;bottom:16px;z-index:10;display:none;background:#10b981;color:#053321}
 
-@media (max-width: 760px){
-  .grid{grid-template-columns:1fr}
-  .list{grid-template-columns:1fr}
-  .card{padding:18px}
-}
+.hidden{display:none}
+.hint{color:var(--muted);font-size:13px}
+
+@media (max-width:760px){ .grid{grid-template-columns:1fr} .card{padding:20px} .brand h1{font-size:32px} }
