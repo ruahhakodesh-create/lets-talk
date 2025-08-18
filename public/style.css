@@ -1,6 +1,6 @@
 body {
   font-family: 'Quicksand', sans-serif;
-  background: url("background.png") no-repeat center center fixed;
+  background: url("bg-tile.png") no-repeat center center fixed;
   background-size: cover;
   display: flex;
   flex-direction: column;
