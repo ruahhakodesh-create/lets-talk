@@ -7,49 +7,47 @@
   <link rel="stylesheet" href="style.css" />
   <link rel="icon" href="favicon.svg" type="image/svg+xml" />
   <link rel="manifest" href="manifest.webmanifest" />
-  <meta name="theme-color" content="#2563eb" />
+  <meta name="theme-color" content="#7c3aed" />
 </head>
 <body>
   <header class="header">
-    <h1>Let's Talk</h1>
+    <div class="brand"><h1 data-i18n="brand">Let's Talk</h1></div>
     <nav>
-      <a href="terms.html" target="_blank">Regulamin</a>
-      <a href="privacy.html" target="_blank">Polityka prywatności</a>
+      <a href="terms.html" target="_blank" data-i18n="terms">Regulamin</a>
+      <a href="privacy.html" target="_blank" data-i18n="privacy">Polityka prywatności</a>
     </nav>
   </header>
 
   <main class="container">
-    <section id="intro" class="card">
-      <p class="motto">
-        Rozmowa z żywym człowiekiem. Anonimowo. Bez kont. Wiadomości znikają po zamknięciu okna.
-      </p>
-      <p class="sub">Tylko tekst. Bez linków i multimediów.</p>
+    <section id="intro" class="card intro">
+      <p data-i18n="motto">Rozmowa z żywym człowiekiem. Anonimowo. Bez kont. Wiadomości znikają po zamknięciu okna.</p>
+      <p class="sub" data-i18n="sub">Tylko tekst. Bez linków i multimediów.</p>
     </section>
 
     <section id="entry" class="card">
-      <h2>Wejdź</h2>
+      <h2 data-i18n="enter">Wejdź</h2>
       <div class="grid">
-        <label>Nick
+        <label data-i18n="nickLabel">Nick
           <input name="nick" id="nick" maxlength="24" placeholder="Anon" required />
         </label>
-        <label>Wiek
+        <label data-i18n="ageLabel">Wiek
           <input name="age" id="age" maxlength="12" placeholder="25-34" required />
         </label>
-        <label>Kraj
+        <label data-i18n="countryLabel">Kraj
           <input name="country" id="country" maxlength="12" placeholder="PL" required />
         </label>
       </div>
-      <button id="enterBtn">Wejdź do lobby</button>
-      <p class="hint">Rekomendowane 18+. Korzystasz na własną odpowiedzialność.</p>
+      <button id="enterBtn" data-i18n="enterBtn">Wejdź do lobby</button>
+      <p class="hint" data-i18n="hint">Rekomendowane 18+. Korzystasz na własną odpowiedzialność.</p>
     </section>
 
     <section id="lobby" class="card hidden">
       <div class="lobby-top">
-        <h2>Wybierz rozmówcę</h2>
+        <h2 data-i18n="lobby">Wybierz rozmówcę</h2>
         <div id="me"></div>
       </div>
       <div id="list" class="list"></div>
-      <p class="hint">Kliknij kafelek lub „Zaproś”.</p>
+      <p class="hint" data-i18n="inviteHint">Kliknij kafelek lub „Zaproś”.</p>
     </section>
 
     <section id="chat" class="card hidden">
@@ -59,18 +57,15 @@
       <div id="log" class="log" aria-live="polite"></div>
       <form id="sendForm" autocomplete="off">
         <input id="text" maxlength="500" placeholder="Napisz wiadomość…" />
-        <button>Wyślij</button>
-        <button type="button" id="endBtn" class="secondary">Zakończ</button>
+        <button data-i18n="sendBtn">Wyślij</button>
+        <button type="button" id="endBtn" class="secondary" data-i18n="endBtn">Zakończ</button>
       </form>
     </section>
   </main>
 
-  <footer class="footer">
-    <small>© Let's Talk</small>
-  </footer>
+  <footer class="footer"><small>© Let's Talk</small></footer>
 
-  <!-- PWA install floating button -->
-  <button id="installBtn" style="position:fixed;right:16px;bottom:16px;z-index:10;display:none">Zainstaluj</button>
+  <button id="installBtn" aria-label="Zainstaluj">Zainstaluj</button>
 
   <script src="/socket.io/socket.io.js"></script>
   <script src="app.js"></script>
