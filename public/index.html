@@ -12,30 +12,53 @@
   <!-- PANEL WPROWADZAJĄCY -->
   <section id="intro" class="panel">
     <p class="intro-text">
-      Czujesz się samotny, wstydzisz się kontaktu, szukasz towarzystwa do rozmowy, potrzebujesz pocieszenia lub wsparcia, chcesz wymienić się doświadczeniami lub po prostu poznać nowe osoby — w tym miejscu możesz rozmawiać całkowicie anonimowo. Bez logowania, rejestracji ani zbierania danych. W każdej chwili możesz zakończyć rozmowę, a cała jej treść oraz wszystkie elementy znikają natychmiast. Najważniejsze: rozmawiasz zawsze w swoim języku — wszystkie rozmowy są tłumaczone.
+      Czujesz się samotny, wstydzisz się kontaktu, szukasz towarzystwa do rozmowy, potrzebujesz pocieszenia lub wsparcia,
+      chcesz wymienić się doświadczeniami lub po prostu poznać nowe osoby — w tym miejscu możesz rozmawiać całkowicie anonimowo.
+      Bez logowania, rejestracji ani zbierania danych. W każdej chwili możesz zakończyć rozmowę, a cała jej treść oraz wszystkie
+      elementy znikają natychmiast. Najważniejsze: rozmawiasz zawsze w swoim języku — wszystkie rozmowy są tłumaczone.
     </p>
   </section>
 
-  <!-- FORMULARZ STARTOWY -->
+  <!-- START: NICK + WYBÓR ROZMÓWCY -->
   <section id="start" class="panel">
     <form id="joinForm" autocomplete="off">
       <label for="nickname">Twój pseudonim</label>
       <input type="text" id="nickname" placeholder="np. Luna" required />
 
-      <label for="purpose">Cel rozmowy</label>
-      <select id="purpose" required>
-        <option value="" selected>Wybierz cel rozmowy</option>
-        <option value="relacje">Nawiązanie relacji</option>
-        <option value="wsparcie">Szukam wsparcia</option>
-        <option value="doswiadczenia">Wymiana doświadczeń</option>
-      </select>
+      <div class="actions">
+        <button type="button" id="randBtn" class="secondary">Losowy rozmówca</button>
+        <div class="search">
+          <input type="text" id="searchNick" placeholder="Szukaj po pseudonimie…" />
+          <button type="button" id="searchBtn">Szukaj</button>
+        </div>
+      </div>
 
-      <button type="submit">Rozpocznij rozmowę</button>
+      <button type="submit" id="onlineBtn">Wejdź do lobby</button>
+      <p class="hint">Po wejściu do lobby możesz losować rozmówcę lub zaprosić konkretny pseudonim.</p>
     </form>
+  </section>
+
+  <!-- LOBBY: widoczne po dołączeniu -->
+  <section id="lobby" class="panel hidden">
+    <div class="lobby-head">
+      <div id="meBadge"></div>
+      <div class="lobby-actions">
+        <button id="lobbyRand" class="secondary">Losowy rozmówca</button>
+        <div class="search">
+          <input type="text" id="lobbySearchNick" placeholder="Szukaj po pseudonimie…" />
+          <button id="lobbySearchBtn">Szukaj</button>
+        </div>
+      </div>
+    </div>
+    <div id="info" class="info"></div>
   </section>
 
   <!-- CZAT – DOMYŚLNIE UKRYTY -->
   <section id="chat" class="panel hidden">
+    <div class="chat-top">
+      <div>Rozmowa z: <strong id="peerName">—</strong></div>
+      <button id="endBtn" class="danger">Zakończ</button>
+    </div>
     <div id="messages" class="messages"></div>
     <form id="chatForm" autocomplete="off">
       <input id="messageInput" type="text" placeholder="Napisz wiadomość…" required />
@@ -50,6 +73,7 @@
     <a href="privacy.html" target="_blank" rel="noopener">Polityka prywatności</a>
   </footer>
 
+  <script src="/socket.io/socket.io.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
