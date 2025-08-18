@@ -1,108 +1,102 @@
-:root{
-  --ink:#1e0b3a;              /* ciemny fiolet dla tekstu */
-  --panel:#fde7f3;            /* delikatny róż panelu */
-  --border:#f3cfe3;
-  --btn1:#9333ea;             /* fiolet */
-  --btn2:#ec4899;             /* róż */
+/* style.css */
+
+/* Kolory i zmienne */
+:root {
+  --bg1: #f7b2d9;
+  --bg2: #9fc9eb;
+  --card-bg: rgba(255, 230, 240, 0.9); /* lekko różowe panele */
+  --ink: #3b0066;    /* ciemny fioletowy tekst */
+  --btn1: #6a11cb;
+  --btn2: #ff4f9c;
 }
 
-*{box-sizing:border-box}
-html,body{height:100%;margin:0}
-body{
-  font-family:'Quicksand',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
-  background:url("bg-tile.png") center/cover fixed no-repeat;
-  color:var(--ink);
-  display:flex;flex-direction:column;
+/* Ogólne */
+body {
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+  background: url("bg-tile.png") no-repeat center center fixed;
+  background-size: cover;
+  color: var(--ink);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
 }
 
-/* Layout */
-.container{
-  flex:1;
-  display:flex;flex-direction:column;align-items:center;
-  gap:36px;
-  padding:64px 16px 24px;
+/* Panel */
+.panel {
+  background: var(--card-bg);
+  padding: 24px;
+  border-radius: 16px;
+  margin: 20px auto;
+  width: 80%;
+  max-width: 700px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 }
 
-.card{
-  width:100%;
-  max-width:880px;
-  background:rgba(253,231,243,0.92);
-  border:1px solid var(--border);
-  border-radius:20px;
-  box-shadow:0 8px 24px rgba(0,0,0,.10);
-  padding:28px 32px;
-}
-
-/* Intro – powiększona czcionka */
-.intro-text{
-  margin:0;
-  line-height:1.8;
-  font-size:20px;      /* było 18px */
-  color:var(--ink);
+/* Tekst w panelu */
+.panel p {
+  margin: 0 0 8px 0;
+  line-height: 1.6;
+  font-size: 18px; /* większe litery dla czytelności */
 }
 
 /* Formularz */
-#joinForm{
-  display:grid;
-  grid-template-columns:1fr;
-  gap:14px;
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
-label{font-weight:600}
-input,select{
-  padding:12px 14px;
-  border:2px solid var(--border);
-  border-radius:12px;
-  font-size:16px;
-  background:#fff;
-}
-input:focus,select:focus{
-  outline:none;
-  border-color:#c084fc;
-  box-shadow:0 0 0 4px rgba(192,132,252,.25);
-}
-button{
-  margin-top:6px;
-  padding:12px 18px;
-  border:none;border-radius:12px;
-  color:#fff;
-  background:linear-gradient(135deg,var(--btn1),var(--btn2));
-  font-weight:700;font-size:16px;
-  cursor:pointer;
-  transition:transform .05s,filter .15s;
-}
-button:hover{filter:brightness(1.06)}
-button:active{transform:translateY(1px)}
 
-/* Czat – mniejsze okno */
-.chat{
-  max-width:700px;
-  padding:22px 24px;
+label {
+  font-weight: 600;
+  margin-bottom: 4px;
 }
-#messages{
-  height:280px;
-  overflow-y:auto;
-  background:#fff;
-  border:1px solid var(--border);
-  border-radius:12px;
-  padding:10px;
-  margin-bottom:10px;
-}
-#chatForm{display:flex;gap:10px}
-#chatForm input{flex:1}
-#chatForm button{white-space:nowrap}
 
-/* Stopka – wraca pod czat */
-.footer a{
-  color:var(--ink);            /* ciemny fiolet */
-  text-decoration:underline;
-  font-weight:600;
-  transition:color .2s ease, filter .2s ease;
+input, select {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 16px;
+  font-family: "Poppins", sans-serif;
 }
-.footer a:hover{
-  color:var(--btn2);           /* róż */
-  filter:brightness(1.2);      /* lekkie rozjaśnienie */
+
+/* Przycisk */
+button {
+  background: linear-gradient(90deg, var(--btn1), var(--btn2));
+  color: white;
+  font-size: 16px;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: opacity 0.3s ease;
 }
-.footer .sep{
-  color:var(--ink);
-  margin:0 8px;
+
+button:hover {
+  opacity: 0.9;
+}
+
+/* Stopka */
+.footer {
+  margin-top: 30px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.footer a {
+  color: var(--ink);            /* ciemny fiolet */
+  text-decoration: underline;
+  font-weight: 600;
+  transition: color .2s ease, filter .2s ease;
+}
+
+.footer a:hover {
+  color: var(--btn2);           /* róż */
+  filter: brightness(1.2);      /* lekkie rozjaśnienie */
+}
+
+.footer .sep {
+  color: var(--ink);
+  margin: 0 8px;
 }
