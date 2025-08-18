@@ -1,83 +1,62 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Let's Talk</title>
-  <link rel="stylesheet" href="style.css" />
-  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
-  <link rel="manifest" href="manifest.webmanifest" />
-  <meta name="theme-color" content="#7c3aed" />
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- CENTRALNY HERO -->
-  <header class="hero">
-    <h1 class="logo">Let’s Talk</h1>
-  </header>
+  <div class="container">
 
-  <main class="container">
-    <!-- Intro -->
-    <section id="intro" class="card intro">
-      <p data-i18n="motto">Rozmowa z żywym człowiekiem. Anonimowo. Bez kont. Wiadomości znikają po zamknięciu okna.</p>
-      <p class="sub" data-i18n="sub">Tylko tekst. Bez linków i multimediów.</p>
+    <!-- Panel powitalny -->
+    <section class="intro card">
+      <p>
+        Czujesz się samotny, wstydzisz się kontaktu, szukasz towarzystwa do rozmowy,
+        potrzebujesz pocieszenia lub wsparcia, chcesz wymienić się doświadczeniami
+        lub po prostu poznać nowe osoby – w tym miejscu możesz rozmawiać zupełnie anonimowo.
+      </p>
+      <p>
+        Bez logowania, rejestracji, zbierania twoich danych. W każdej chwili możesz zakończyć rozmowę,
+        a cała jej treść i wszystkie jej ślady natychmiast znikną.
+      </p>
+      <p>
+        I co najważniejsze – rozmawiasz zawsze w swoim języku. Wszystkie rozmowy są tłumaczone.
+      </p>
     </section>
 
-    <!-- Wejście -->
-    <section id="entry" class="card">
-      <h2 data-i18n="enter">Wejdź</h2>
-      <div class="grid">
-        <label data-i18n="nickLabel">Nick
-          <input name="nick" id="nick" maxlength="24" placeholder="Anon" required />
-        </label>
-        <label data-i18n="ageLabel">Wiek
-          <input name="age" id="age" maxlength="12" placeholder="25-34" required />
-        </label>
-        <label data-i18n="countryLabel">Kraj
-          <input name="country" id="country" maxlength="12" placeholder="PL" required />
-        </label>
-      </div>
-      <button id="enterBtn" data-i18n="enterBtn">Wejdź do lobby</button>
-      <p class="hint" data-i18n="hint">Rekomendowane 18+. Korzystasz na własną odpowiedzialność.</p>
-    </section>
+    <!-- Formularz startowy -->
+    <section class="form card">
+      <form id="joinForm">
+        <label for="nickname">Twój pseudonim:</label>
+        <input type="text" id="nickname" name="nickname" required>
 
-    <!-- Lobby -->
-    <section id="lobby" class="card hidden">
-      <div class="lobby-top">
-        <h2 data-i18n="lobby">Wybierz rozmówcę</h2>
-        <div id="me"></div>
-      </div>
-      <div id="list" class="list"></div>
-      <p class="hint" data-i18n="inviteHint">Kliknij kafelek lub „Zaproś”.</p>
-    </section>
+        <label for="purpose">Cel rozmowy:</label>
+        <select id="purpose" name="purpose">
+          <option value="relacje">Nawiązanie relacji</option>
+          <option value="wsparcie">Szukam wsparcia</option>
+          <option value="doswiadczenia">Wymiana doświadczeń</option>
+        </select>
 
-    <!-- Czat -->
-    <section id="chat" class="card hidden">
-      <div class="chat-top">
-        <div id="peer">—</div>
-      </div>
-      <div id="log" class="log" aria-live="polite"></div>
-      <form id="sendForm" autocomplete="off">
-        <input id="text" maxlength="500" placeholder="Napisz wiadomość…" />
-        <button data-i18n="sendBtn">Wyślij</button>
-        <button type="button" id="endBtn" class="secondary" data-i18n="endBtn">Zakończ</button>
+        <button type="submit">Rozpocznij rozmowę</button>
       </form>
     </section>
-  </main>
 
-  <!-- Stopka z linkami -->
-  <footer class="footer">
-    <small>© Let's Talk</small>
-    <nav>
-      <a href="terms.html" target="_blank" data-i18n="terms">Regulamin</a>
-      <span class="sep">•</span>
-      <a href="privacy.html" target="_blank" data-i18n="privacy">Polityka prywatności</a>
-    </nav>
+    <!-- Okno czata -->
+    <section id="chat" class="chat card hidden">
+      <div id="messages"></div>
+      <form id="chatForm">
+        <input type="text" id="messageInput" placeholder="Napisz wiadomość..." required>
+        <button type="submit">Wyślij</button>
+      </form>
+    </section>
+
+  </div>
+
+  <footer>
+    <a href="#">Regulamin</a> | <a href="#">Polityka prywatności</a>
   </footer>
 
-  <!-- Przycisk skrótu/PWA -->
-  <button id="installBtn" class="install">Dodaj skrót</button>
-
-  <script src="/socket.io/socket.io.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
