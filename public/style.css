@@ -4,6 +4,7 @@
   --border:#f3cfe3;
   --btn1:#9333ea;
   --btn2:#ec4899;
+  --danger:#ef4444;
 }
 
 *{box-sizing:border-box}
@@ -17,8 +18,7 @@ body{
 
 /* PANELE */
 .panel{
-  width:100%;
-  max-width:880px;
+  width:100%;max-width:880px;
   background:var(--panel);
   border:1px solid var(--border);
   border-radius:18px;
@@ -27,51 +27,59 @@ body{
   margin:34px 16px 0;
 }
 
-/* TEKST INTRO – WIĘKSZY I CZYTELNY */
+/* TEKST INTRO */
 .intro-text{
-  margin:0;
-  font-size:20px;          /* powiększone */
-  line-height:1.85;
-  color:var(--ink);
+  margin:0;font-size:20px;line-height:1.85;color:var(--ink);
 }
 
-/* FORMULARZ STARTOWY */
+/* FORMULARZ START */
 #joinForm{display:grid;gap:14px}
 label{font-weight:600}
 input,select{
-  padding:12px 14px;
-  border:2px solid var(--border);
-  border-radius:12px;
-  font-size:16px;
-  background:#fff;
+  padding:12px 14px;border:2px solid var(--border);
+  border-radius:12px;font-size:16px;background:#fff
 }
 input:focus,select:focus{
-  outline:none;border-color:#c084fc;
-  box-shadow:0 0 0 4px rgba(192,132,252,.25);
+  outline:none;border-color:#c084fc;box-shadow:0 0 0 4px rgba(192,132,252,.25)
 }
 button{
-  margin-top:6px;
-  padding:12px 18px;
-  border:none;border-radius:12px;
-  color:#fff;
+  padding:12px 18px;border:none;border-radius:12px;color:#fff;
   background:linear-gradient(135deg,var(--btn1),var(--btn2));
   font-weight:700;font-size:16px;cursor:pointer;
   transition:transform .05s,filter .15s
 }
 button:hover{filter:brightness(1.06)}
 button:active{transform:translateY(1px)}
+button.secondary{
+  color:#fff;background:linear-gradient(135deg,#14b8a6,#22c55e)
+}
+button.danger{
+  color:#fff;background:linear-gradient(135deg,var(--danger),#fb7185)
+}
+.hint{opacity:.8;font-size:13px}
 
-/* CZAT – MNIEJSZY NIŻ INTRO */
+/* AKCJE */
+.actions,.lobby-actions{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.search{display:flex;gap:8px}
+.search input{min-width:220px}
+
+/* LOBBY */
+#lobby .info{margin-top:10px;font-size:14px;opacity:.95}
+.lobby-head{display:flex;justify-content:space-between;gap:12px;align-items:center}
+#meBadge{font-weight:700}
+
+/* CZAT */
 #chat{max-width:700px}
+.chat-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
 .messages{
-  height:280px;overflow:auto;background:#fff;
+  height:320px;overflow:auto;background:#fff;
   border:1px solid var(--border);border-radius:12px;
   padding:10px;margin-bottom:10px
 }
-#chatForm{display:flex;gap:10px}
-#chatForm input{flex:1}
+.msg{margin:6px 0}
+.msg.me{font-weight:600}
 
-/* STOPKA POD CZATEM, WYRAŹNE LINKI */
+/* STOPKA */
 .footer{
   width:100%;text-align:center;margin:26px 0 28px;font-size:15px
 }
@@ -82,11 +90,11 @@ button:active{transform:translateY(1px)}
 .footer a:hover{color:var(--btn2);filter:brightness(1.2)}
 .footer .sep{margin:0 8px;color:var(--ink)}
 
-/* UKRYWANIE – DZIAŁA ZAWSZE */
+/* UKRYWANIE */
 .hidden{display:none !important}
 [hidden]{display:none !important}
 
 @media (max-width:520px){
   .panel{padding:22px;margin-top:26px}
-  .messages{height:240px}
+  .messages{height:260px}
 }
