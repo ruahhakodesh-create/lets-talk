@@ -1,113 +1,113 @@
-body {
-  font-family: 'Quicksand', sans-serif;
-  background: url("bg-tile.png") no-repeat center center fixed;
-  background-size: cover;
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  margin: 0;
+:root{
+  --ink:#1e0b3a;              /* ciemny fiolet dla tekstu */
+  --panel:#fde7f3;            /* delikatny róż panelu */
+  --border:#f3cfe3;
+  --btn1:#9333ea;             /* fiolet */
+  --btn2:#ec4899;             /* róż */
 }
 
-
-
-.container {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 40px;
-  padding: 80px 20px 20px;
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{
+  font-family:'Quicksand',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+  background:url("bg-tile.png") center/cover fixed no-repeat;
+  color:var(--ink);
+  display:flex;flex-direction:column;
 }
 
-/* Panel ogólny */
-.card {
-  background: rgba(255,255,255,0.95);
-  padding: 30px 40px;
-  border-radius: 20px;
-  box-shadow: 0 6px 24px rgba(0,0,0,0.12);
-  max-width: 800px;
-  width: 100%;
-  line-height: 1.8;
-  font-size: 20px;
+/* Layout */
+.container{
+  flex:1;
+  display:flex;flex-direction:column;align-items:center;
+  gap:36px;                   /* większy odstęp między panelami */
+  padding:64px 16px 24px;     /* niższy start na stronie */
 }
 
-/* Formularz startowy */
-#joinForm {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
+.card{
+  width:100%;
+  max-width:880px;
+  background:rgba(253,231,243,0.92); /* lekko różowe tło */
+  border:1px solid var(--border);
+  border-radius:20px;
+  box-shadow:0 8px 24px rgba(0,0,0,.10);
+  padding:28px 32px;
 }
 
-#joinForm input, #joinForm select {
-  padding: 12px;
-  border-radius: 10px;
-  border: 2px solid #ccc;
-  font-size: 18px;
+/* Intro – jednolity blok bez przerw między liniami */
+.intro-text{
+  margin:0;
+  line-height:1.75;
+  font-size:18px;
+  color:var(--ink);
 }
 
-#joinForm button {
-  padding: 12px 24px;
-  background: linear-gradient(135deg, #9333ea, #ec4899);
-  border: none;
-  border-radius: 10px;
-  color: white;
-  font-size: 18px;
-  font-weight: 600;
-  cursor: pointer;
+/* Formularz */
+#joinForm{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:14px;
 }
-
-/* Czaty */
-.chat {
-  height: 400px;
-  display: flex;
-  flex-direction: column;
+label{font-weight:600}
+input,select{
+  padding:12px 14px;
+  border:2px solid var(--border);
+  border-radius:12px;
+  font-size:16px;
+  background:#fff;
 }
-
-#messages {
-  flex: 1;
-  overflow-y: auto;
-  margin-bottom: 10px;
-  padding: 10px;
-  background: #fafafa;
-  border-radius: 12px;
-  border: 1px solid #ddd;
+input:focus,select:focus{
+  outline:none;
+  border-color:#c084fc;
+  box-shadow:0 0 0 4px rgba(192,132,252,.25);
 }
-
-#chatForm {
-  display: flex;
-  gap: 10px;
+button{
+  margin-top:6px;
+  padding:12px 18px;
+  border:none;border-radius:12px;
+  color:#fff;
+  background:linear-gradient(135deg,var(--btn1),var(--btn2));
+  font-weight:700;font-size:16px;
+  cursor:pointer;
+  transition:transform .05s,filter .15s;
 }
+button:hover{filter:brightness(1.06)}
+button:active{transform:translateY(1px)}
 
-#chatForm input {
-  flex: 1;
-  padding: 12px;
-  border-radius: 10px;
-  border: 2px solid #ccc;
-  font-size: 16px;
+/* Czat – mniejsze okno niż intro */
+.chat{
+  max-width:700px;            /* węższe */
+  padding:22px 24px;
 }
-
-#chatForm button {
-  padding: 12px 24px;
-  background: linear-gradient(135deg, #9333ea, #ec4899);
-  border: none;
-  border-radius: 10px;
-  color: white;
-  font-size: 16px;
-  cursor: pointer;
+#messages{
+  height:280px;               /* mniejsze pole wiadomości */
+  overflow-y:auto;
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:10px;
+  margin-bottom:10px;
 }
+#chatForm{display:flex;gap:10px}
+#chatForm input{flex:1}
+#chatForm button{white-space:nowrap}
 
-/* Stopka */
-footer {
-  text-align: center;
-  padding: 20px;
-  font-size: 14px;
-  color: #666;
+/* Stopka – zawsze czytelna, kontrast i tło */
+.footer{
+  position:sticky; bottom:0;
+  width:100%;
+  background:rgba(255,255,255,.9);
+  border-top:1px solid #eee;
+  backdrop-filter:blur(6px);
+  text-align:center;
+  padding:10px 12px;
+  z-index:5;
 }
+.footer a{color:#000;text-decoration:underline;font-weight:600}
+.footer .sep{color:#000;margin:0 8px}
+.hidden{display:none}
 
-footer a {
-  color: #9333ea;
-  text-decoration: none;
-  margin: 0 5px;
+@media (max-width:520px){
+  .container{gap:28px;padding-top:48px}
+  .card{padding:22px}
+  #messages{height:240px}
 }
-
-.hidden { display: none; }
