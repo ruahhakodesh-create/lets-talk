@@ -100,3 +100,5 @@ button:hover {
   color: var(--ink);
   margin: 0 8px;
 }
+.hidden{display:none !important;}
+[hidden]{display:none !important;}
