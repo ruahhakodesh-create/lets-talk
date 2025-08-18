@@ -1,36 +1,76 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Let's Talk</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <meta name="theme-color" content="#2563eb" />
 </head>
 <body>
-  <div id="entry">
+  <header class="header">
     <h1>Let's Talk</h1>
-    <form id="joinForm">
-      <label>Nick: <input name="nick" required></label>
-      <label>Wiek: <input name="age" required></label>
-      <label>Kraj: <input name="country" required></label>
-      <button type="submit">Wejdź</button>
-    </form>
-  </div>
+    <nav>
+      <a href="terms.html" target="_blank">Regulamin</a>
+      <a href="privacy.html" target="_blank">Polityka prywatności</a>
+    </nav>
+  </header>
 
-  <div id="lobby" class="hidden">
-    <h2>Lobby</h2>
-    <ul id="userList"></ul>
-    <p class="hint">Kliknij nick, aby wysłać zaproszenie do rozmowy 1:1.</p>
-  </div>
+  <main class="container">
+    <section id="intro" class="card">
+      <p class="motto">
+        Rozmowa z żywym człowiekiem. Anonimowo. Bez kont. Wiadomości znikają po zamknięciu okna.
+      </p>
+      <p class="sub">Tylko tekst. Bez linków i multimediów.</p>
+    </section>
 
-  <div id="chat" class="hidden">
-    <h2>Rozmowa z <span id="peerName"></span></h2>
-    <div id="messages"></div>
-    <form id="msgForm">
-      <input id="msgInput" autocomplete="off" maxlength="500" placeholder="Napisz wiadomość…">
-      <button type="submit">Wyślij</button>
-      <button type="button" id="endBtn">Zakończ</button>
-    </form>
-  </div>
+    <section id="entry" class="card">
+      <h2>Wejdź</h2>
+      <div class="grid">
+        <label>Nick
+          <input name="nick" id="nick" maxlength="24" placeholder="Anon" required />
+        </label>
+        <label>Wiek
+          <input name="age" id="age" maxlength="12" placeholder="25-34" required />
+        </label>
+        <label>Kraj
+          <input name="country" id="country" maxlength="12" placeholder="PL" required />
+        </label>
+      </div>
+      <button id="enterBtn">Wejdź do lobby</button>
+      <p class="hint">Rekomendowane 18+. Korzystasz na własną odpowiedzialność.</p>
+    </section>
+
+    <section id="lobby" class="card hidden">
+      <div class="lobby-top">
+        <h2>Wybierz rozmówcę</h2>
+        <div id="me"></div>
+      </div>
+      <div id="list" class="list"></div>
+      <p class="hint">Kliknij kafelek lub „Zaproś”.</p>
+    </section>
+
+    <section id="chat" class="card hidden">
+      <div class="chat-top">
+        <div id="peer">—</div>
+      </div>
+      <div id="log" class="log" aria-live="polite"></div>
+      <form id="sendForm" autocomplete="off">
+        <input id="text" maxlength="500" placeholder="Napisz wiadomość…" />
+        <button>Wyślij</button>
+        <button type="button" id="endBtn" class="secondary">Zakończ</button>
+      </form>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <small>© Let's Talk</small>
+  </footer>
+
+  <!-- PWA install floating button -->
+  <button id="installBtn" style="position:fixed;right:16px;bottom:16px;z-index:10;display:none">Zainstaluj</button>
 
   <script src="/socket.io/socket.io.js"></script>
   <script src="app.js"></script>
