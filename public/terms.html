@@ -1,13 +1,16 @@
-<!DOCTYPE html>
-<html lang="pl">
-<head><meta charset="UTF-8"><title>Regulamin</title></head>
-<body>
-<h1>Regulamin</h1>
+<!DOCTYPE html><html lang="pl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Regulamin</title></head>
+<body style="font:16px/1.5 Poppins,system-ui,sans-serif;max-width:900px;margin:40px auto;padding:0 16px;color:#1f2937">
+<h1 data-i18n="title">Regulamin</h1>
 <ul>
-<li>Korzystasz na własną odpowiedzialność.</li>
-<li>Rekomendacja: tylko dla osób pełnoletnich.</li>
-<li>Zabronione jest publikowanie treści nielegalnych.</li>
-<li>Operator nie ponosi odpowiedzialności za treść rozmów.</li>
+<li data-i18n="l1">Korzystasz na własną odpowiedzialność.</li>
+<li data-i18n="l2">Rekomendacja: tylko dla osób pełnoletnich.</li>
+<li data-i18n="l3">Zabronione jest publikowanie treści nielegalnych.</li>
+<li data-i18n="l4">Operator nie ponosi odpowiedzialności za treść rozmów.</li>
 </ul>
-</body>
-</html>
+<script>
+const I={pl:{title:"Regulamin",l1:"Korzystasz na własną odpowiedzialność.",l2:"Rekomendacja: tylko dla osób pełnoletnich.",l3:"Zabronione jest publikowanie treści nielegalnych.",l4:"Operator nie ponosi odpowiedzialności za treść rozmów."},
+en:{title:"Terms",l1:"Use at your own risk.",l2:"Recommended for adults only.",l3:"Illegal content is prohibited.",l4:"The operator is not responsible for user content."}};
+const L=((navigator.language||"pl").slice(0,2).toLowerCase() in I)?(navigator.language||"pl").slice(0,2).toLowerCase():"en";
+document.querySelectorAll("[data-i18n]").forEach(el=>{const k=el.getAttribute("data-i18n"); if(I[L][k]) el.textContent=I[L][k];});
+</script>
+</body></html>
