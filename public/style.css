@@ -1,124 +1,121 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap');
+/* Import bardziej miękkiego, artystycznego fontu */
+@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
 
-:root{
-  --text:#1e2330;
-  --muted:#6b7280;
-  --primary:#7c3aed;        /* fiolet */
-  --primary2:#3b82f6;       /* niebieski */
-  --glass: rgba(255,255,255,.90);
-  --line:#e6e9f2;
-}
-
-*{box-sizing:border-box}
-html,body{margin:0; height:100%}
-body{
-  font-family:'Poppins',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
-  color:var(--text);
-  background:url("bg-tile.png") center/cover fixed no-repeat;
-  display:flex; flex-direction:column;
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-/* HERO: centralny, artystyczny napis */
-.hero{
-  display:flex; align-items:center; justify-content:center;
-  padding:28px 16px 8px;
-}
-.logo{
-  margin:0;
-  text-align:center;
-  font-weight:800;
-  font-size: clamp(52px, 8vw, 92px);
-  letter-spacing:.8px;
-  line-height:1;
-  background: linear-gradient(135deg, rgba(123,58,237,.85), rgba(236,72,153,.80), rgba(59,130,246,.85));
-  -webkit-background-clip:text; background-clip:text; color:transparent;
-  opacity:.95;
-  filter: drop-shadow(0 3px 10px rgba(0,0,0,.12));
+body {
+  font-family: 'Inter', sans-serif;
+  background: url('bg-tile.png') no-repeat center center fixed;
+  background-size: cover;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  color: #222;
 }
 
-/* Layout i karty */
-.container{max-width:1100px;width:100%;margin:0 auto;padding:18px;display:grid;gap:16px;flex:1}
-.card{
-  background:var(--glass);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border:1px solid var(--line);
-  border-radius:26px;
-  padding:24px;
-  box-shadow:0 10px 30px rgba(0,0,0,.08);
-}
-.intro{text-align:center}
-.intro p{font-size:18px}
-.intro .sub{color:var(--muted);font-size:14px}
-
-/* Formularz */
-.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
-label{font-size:14px;color:#303544}
-input{
-  width:100%;padding:14px;border:1px solid var(--line);border-radius:14px;font-size:16px;
-  outline:0;transition:border .15s, box-shadow .15s;background:#fff
-}
-input:focus{border-color:#93c5fd;box-shadow:0 0 0 4px rgba(147,197,253,.35)}
-button{
-  background:linear-gradient(135deg,var(--primary2),var(--primary));
-  color:#fff;border:0;border-radius:14px;
-  padding:12px 18px;font-weight:600;font-size:16px;cursor:pointer;
-  transition:transform .05s, filter .15s, box-shadow .15s
-}
-button:hover{filter:brightness(1.05)}
-button:active{transform:translateY(1px)}
-button.secondary{background:#0ea5e9}
-.hint{color:var(--muted);font-size:13px}
-.hidden{display:none}
-
-/* Lobby */
-.lobby-top{display:flex;justify-content:space-between;align-items:center}
-#me{color:var(--muted);font-size:14px}
-.list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-.item{
-  display:flex;justify-content:space-between;align-items:center;gap:12px;
-  padding:14px;border:1px solid var(--line);border-radius:18px;background:#fff;cursor:pointer;
-  transition:box-shadow .15s, border-color .15s, transform .05s
-}
-.item:hover{box-shadow:0 8px 22px rgba(16,24,40,.10);border-color:#dbe2f1}
-.item:active{transform:translateY(1px)}
-.item button.invited{background:#10b981}
-
-/* Czat – dymki */
-.chat-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
-#peer{font-weight:700;font-size:18px}
-.log{
-  position:relative;padding:18px;height:56vh;overflow:auto;background:#ffffff;
-  border:1px solid var(--line);border-radius:28px
-}
-.msg{display:flex;margin:10px 0}
-.msg .bubble{position:relative;max-width:70ch;padding:10px 14px;border-radius:18px;word-wrap:break-word;font-size:16px}
-.msg.me{justify-content:flex-end}
-.msg.me .bubble{background:linear-gradient(135deg,var(--primary2),var(--primary));color:#fff}
-.msg.peer .bubble{background:#eef2ff;border:1px solid #e0e7ff;color:#111827}
-.msg.me .bubble::after{content:"";position:absolute;right:-8px;bottom:6px;width:16px;height:16px;background:linear-gradient(135deg,var(--primary2),var(--primary));border-bottom-left-radius:16px;transform:skewX(-25deg)}
-.msg.peer .bubble::after{content:"";position:absolute;left:-8px;bottom:6px;width:16px;height:16px;background:#eef2ff;border:1px solid #e0e7ff;border-right:none;border-top:none;border-bottom-left-radius:16px;transform:skewX(25deg)}
-#sendForm{display:flex;gap:8px;margin-top:12px}
-#sendForm input{flex:1}
-
-/* Stopka – na dole, z odstępami */
-.footer{
-  display:flex;align-items:center;justify-content:space-between;
-  max-width:1100px;width:100%;margin:12px auto 24px;padding:0 18px;color:var(--muted)
-}
-.footer nav{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
-.footer a{color:#1f2937;text-decoration:underline;font-size:14px}
-.footer .sep{opacity:.5}
-
-/* Przycisk „Dodaj skrót” (PWA) */
-.install{
-  position:fixed;right:16px;bottom:16px;z-index:10;display:none;
-  background:#10b981;color:#053321;border:0;border-radius:12px;padding:10px 14px;font-weight:600
+/* DUŻY centralny napis */
+.logo {
+  text-align: center;
+  font-family: 'Baloo 2', cursive;
+  font-weight: 600;
+  font-size: clamp(64px, 10vw, 120px);
+  margin: 40px 0 20px 0;
+  color: rgba(147, 51, 234, 0.8); /* fiolet półprzezroczysty */
+  text-shadow: 0 3px 12px rgba(0,0,0,0.2);
 }
 
-/* Mobile */
-@media (max-width:760px){
-  .grid{grid-template-columns:1fr}
-  .card{padding:20px}
-  .logo{font-size: clamp(44px, 12vw, 64px)}
+/* Główne pudełka */
+.container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 20px;
+}
+
+.card {
+  background: rgba(255, 255, 255, 0.9);
+  padding: 25px 35px;
+  border-radius: 20px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  max-width: 800px;
+  width: 100%;
+  text-align: center;
+}
+
+/* Tekst informacyjny */
+.card p {
+  font-size: 18px;
+  line-height: 1.5;
+  color: #333;
+}
+
+/* Formularz wejścia */
+form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: center;
+  align-items: center;
+}
+
+form label {
+  font-weight: 600;
+  font-size: 16px;
+}
+
+input, select {
+  padding: 10px 14px;
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  font-size: 16px;
+  min-width: 140px;
+}
+
+input:focus, select:focus {
+  border-color: #9333ea;
+  outline: none;
+  box-shadow: 0 0 8px rgba(147, 51, 234, 0.5);
+}
+
+button {
+  background: linear-gradient(135deg, #9333ea, #ec4899);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 12px 24px;
+  font-size: 18px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+/* Stopka */
+footer {
+  margin-top: auto;
+  padding: 20px;
+  text-align: center;
+  font-size: 14px;
+  color: #333;
+}
+
+footer a {
+  color: #222;
+  text-decoration: none;
+  margin: 0 10px;
+}
+
+footer a:hover {
+  text-decoration: underline;
 }
