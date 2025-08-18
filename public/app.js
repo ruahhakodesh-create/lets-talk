@@ -1,7 +1,9 @@
-// PWA: SW + install prompt
+// PWA: rejestracja SW
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker.register("/sw.js");
 }
+
+// PWA: przycisk instalacji
 let deferredPrompt = null;
 const installBtn = document.getElementById("installBtn");
 window.addEventListener("beforeinstallprompt", (e) => {
@@ -10,6 +12,12 @@ window.addEventListener("beforeinstallprompt", (e) => {
   installBtn.style.display = "inline-block";
 });
 installBtn?.addEventListener("click", async () => {
+  // iOS nie wspiera beforeinstallprompt
+  const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+  if (isIOS) {
+    alert("Na iOS użyj: Udostępnij → Do ekranu początkowego.");
+    return;
+  }
   if (!deferredPrompt) return;
   deferredPrompt.prompt();
   await deferredPrompt.userChoice;
@@ -17,117 +25,112 @@ installBtn?.addEventListener("click", async () => {
   installBtn.style.display = "none";
 });
 
-// UI helpers
-const $ = (s) => document.querySelector(s);
-const entry  = $("#entry");
-const lobby  = $("#lobby");
-const chat   = $("#chat");
-const list   = $("#list");
-const meBox  = $("#me");
-const peerEl = $("#peer");
-const log    = $("#log");
+// UI
+const $ = (s)=>document.querySelector(s);
+const entry = $("#entry");
+const lobby = $("#lobby");
+const chat  = $("#chat");
+const list  = $("#list");
+const meBox = $("#me");
+const peerEl= $("#peer");
+const log   = $("#log");
 
-// Autofocus na starcie
-window.addEventListener("load", () => $("#nick")?.focus());
+// autofocus
+window.addEventListener("load", ()=> $("#nick")?.focus());
 
-// Socket
+// socket
 const socket = io();
 let peerId = null;
 
-// Wejście do lobby
-$("#enterBtn").addEventListener("click", () => {
+// wejście
+$("#enterBtn").addEventListener("click", ()=>{
   const nick = $("#nick").value || "Anon";
-  const age = $("#age").value || "ANY";
+  const age  = $("#age").value  || "ANY";
   const country = $("#country").value || "ANY";
-
   socket.emit("join", { nick, age, country });
   meBox.textContent = `${nick} · ${age} · ${country}`;
-
   entry.classList.add("hidden");
   lobby.classList.remove("hidden");
 });
 
-// Lista rozmówców
-socket.on("users", (arr) => {
+// lista rozmówców
+socket.on("users", (arr)=>{
   list.innerHTML = "";
-  arr
-    .filter((u) => u.id !== socket.id)
-    .forEach((u) => {
-      const item = document.createElement("div");
-      item.className = "item";
-      item.tabIndex = 0;
+  arr.filter(u=>u.id!==socket.id).forEach(u=>{
+    const item = document.createElement("div");
+    item.className="item"; item.tabIndex=0;
 
-      const meta = document.createElement("div");
-      meta.className = "meta";
-      meta.innerHTML = `<div class="line"><strong>${u.nick}</strong> · ${u.age} · ${u.country}</div>`;
+    const meta = document.createElement("div");
+    meta.className="meta";
+    meta.innerHTML = `<div class="line"><strong>${u.nick}</strong> · ${u.age} · ${u.country}</div>`;
 
-      const btn = document.createElement("button");
-      btn.textContent = "Zaproś";
+    const btn = document.createElement("button");
+    btn.textContent = "Zaproś";
 
-      // Jeden punkt wejścia do akcji + blokada podwójnego kliku
-      const inviteOnce = () => {
-        if (btn.disabled) return;
-        socket.emit("invite", u.id);
-        btn.disabled = true;
-        btn.classList.add("invited");
-        btn.textContent = "Wysłano…";
-      };
-      btn.addEventListener("click", (e) => { e.stopPropagation(); inviteOnce(); });
-      item.addEventListener("click", inviteOnce);
-      item.addEventListener("keypress", (e) => { if (e.key === "Enter" || e.key === " ") inviteOnce(); });
+    const inviteOnce = ()=>{
+      if (btn.disabled) return;
+      socket.emit("invite", u.id);
+      btn.disabled = true;
+      btn.classList.add("invited");
+      btn.textContent = "Wysłano…";
+    };
 
-      item.appendChild(meta); item.appendChild(btn);
-      list.appendChild(item);
-    });
+    btn.addEventListener("click",(e)=>{ e.stopPropagation(); inviteOnce(); });
+    item.addEventListener("click", inviteOnce);
+    item.addEventListener("keypress",(e)=>{ if(e.key==="Enter"||e.key===" ") inviteOnce(); });
+
+    item.appendChild(meta); item.appendChild(btn);
+    list.appendChild(item);
+  });
 });
 
-// Zaproszenie przychodzi
-socket.on("invited", (user) => {
+// zaproszenie
+socket.on("invited",(user)=>{
   const ok = confirm(`Rozmowa z ${user.nick}?`);
   if (ok) socket.emit("accept", user.id);
 });
 
-// Sparowanie
-socket.on("paired", (user) => {
+// sparowanie
+socket.on("paired",(user)=>{
   peerId = user.id;
   lobby.classList.add("hidden");
   chat.classList.remove("hidden");
   peerEl.textContent = user.nick;
   log.innerHTML = "";
-  setTimeout(() => $("#text")?.focus(), 30); // autofocus po wejściu do czatu
+  setTimeout(()=> $("#text")?.focus(), 30);
 });
 
-// Wysyłanie wiadomości
-$("#sendForm").addEventListener("submit", (e) => {
+// wysyłka
+$("#sendForm").addEventListener("submit",(e)=>{
   e.preventDefault();
   const input = $("#text");
   const text = input.value.trim();
-  if (!text) return;
+  if(!text) return;
   socket.emit("message", text);
   addMsg("me", text);
   input.value = "";
-  input.focus(); // kursor pozostaje aktywny
+  input.focus();
 });
 
-// Odbiór wiadomości
-socket.on("message", (msg) => addMsg("peer", msg.text));
+// odbiór
+socket.on("message",(msg)=> addMsg("peer", msg.text));
 
-// Zakończenie rozmowy
-$("#endBtn").addEventListener("click", () => socket.emit("end"));
-socket.on("ended", () => {
+// zakończenie
+$("#endBtn").addEventListener("click", ()=> socket.emit("end"));
+socket.on("ended", ()=>{
   chat.classList.add("hidden");
   lobby.classList.remove("hidden");
   peerId = null;
-  setTimeout(() => {
+  setTimeout(()=>{
     const first = list.querySelector(".item");
-    if (first) first.focus(); // focus ring po powrocie
-  }, 30);
+    if (first) first.focus();
+  },30);
 });
 
-// Render bańki
-function addMsg(kind, text) {
+// rysowanie dymków
+function addMsg(kind, text){
   const row = document.createElement("div");
-  row.className = "msg " + (kind === "me" ? "me" : "peer");
+  row.className = "msg " + (kind==="me"?"me":"peer");
   const bubble = document.createElement("div");
   bubble.className = "bubble";
   bubble.textContent = text;
