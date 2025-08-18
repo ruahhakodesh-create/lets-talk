@@ -4,6 +4,7 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  margin: 0;
 }
 
 .container {
@@ -11,10 +12,11 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 40px; /* większy odstęp */
-  padding: 60px 20px 20px; /* odsunięcie od góry */
+  gap: 40px;
+  padding: 80px 20px 20px;
 }
 
+/* Panel ogólny */
 .card {
   background: rgba(255,255,255,0.95);
   padding: 30px 40px;
@@ -26,6 +28,30 @@ body {
   font-size: 20px;
 }
 
+/* Formularz startowy */
+#joinForm {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+#joinForm input, #joinForm select {
+  padding: 12px;
+  border-radius: 10px;
+  border: 2px solid #ccc;
+  font-size: 18px;
+}
+
+#joinForm button {
+  padding: 12px 24px;
+  background: linear-gradient(135deg, #9333ea, #ec4899);
+  border: none;
+  border-radius: 10px;
+  color: white;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+}
 
 /* Czaty */
 .chat {
@@ -54,6 +80,7 @@ body {
   padding: 12px;
   border-radius: 10px;
   border: 2px solid #ccc;
+  font-size: 16px;
 }
 
 #chatForm button {
@@ -66,5 +93,18 @@ body {
   cursor: pointer;
 }
 
-/* Ukryte sekcje */
+/* Stopka */
+footer {
+  text-align: center;
+  padding: 20px;
+  font-size: 14px;
+  color: #666;
+}
+
+footer a {
+  color: #9333ea;
+  text-decoration: none;
+  margin: 0 5px;
+}
+
 .hidden { display: none; }
