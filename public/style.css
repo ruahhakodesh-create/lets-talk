@@ -19,25 +19,25 @@ body{
 .container{
   flex:1;
   display:flex;flex-direction:column;align-items:center;
-  gap:36px;                   /* większy odstęp między panelami */
-  padding:64px 16px 24px;     /* niższy start na stronie */
+  gap:36px;
+  padding:64px 16px 24px;
 }
 
 .card{
   width:100%;
   max-width:880px;
-  background:rgba(253,231,243,0.92); /* lekko różowe tło */
+  background:rgba(253,231,243,0.92);
   border:1px solid var(--border);
   border-radius:20px;
   box-shadow:0 8px 24px rgba(0,0,0,.10);
   padding:28px 32px;
 }
 
-/* Intro – jednolity blok bez przerw między liniami */
+/* Intro – powiększona czcionka */
 .intro-text{
   margin:0;
-  line-height:1.75;
-  font-size:18px;
+  line-height:1.8;
+  font-size:20px;      /* było 18px */
   color:var(--ink);
 }
 
@@ -73,13 +73,13 @@ button{
 button:hover{filter:brightness(1.06)}
 button:active{transform:translateY(1px)}
 
-/* Czat – mniejsze okno niż intro */
+/* Czat – mniejsze okno */
 .chat{
-  max-width:700px;            /* węższe */
+  max-width:700px;
   padding:22px 24px;
 }
 #messages{
-  height:280px;               /* mniejsze pole wiadomości */
+  height:280px;
   overflow-y:auto;
   background:#fff;
   border:1px solid var(--border);
@@ -91,19 +91,19 @@ button:active{transform:translateY(1px)}
 #chatForm input{flex:1}
 #chatForm button{white-space:nowrap}
 
-/* Stopka – zawsze czytelna, kontrast i tło */
+/* Stopka – wraca pod czat */
 .footer{
-  position:sticky; bottom:0;
   width:100%;
-  background:rgba(255,255,255,.9);
-  border-top:1px solid #eee;
-  backdrop-filter:blur(6px);
   text-align:center;
-  padding:10px 12px;
-  z-index:5;
+  margin-top:28px;
+  font-size:15px;
 }
-.footer a{color:#000;text-decoration:underline;font-weight:600}
-.footer .sep{color:#000;margin:0 8px}
+.footer a{
+  color:var(--ink);            /* mocny kontrast */
+  text-decoration:underline;
+  font-weight:600;
+}
+.footer .sep{color:var(--ink);margin:0 8px}
 .hidden{display:none}
 
 @media (max-width:520px){
