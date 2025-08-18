@@ -1,37 +1,47 @@
-document.getElementById("joinForm").addEventListener("submit", function(e){
-  e.preventDefault();
+// Logika widoczności: najpierw intro+formularz, po starcie czat
+const joinForm = document.getElementById("joinForm");
+const chatSection = document.getElementById("chat");
+const introSection = document.querySelector(".intro");
+const formSection  = document.querySelector(".form");
 
-  const nickname = document.getElementById("nickname").value.trim();
+joinForm.addEventListener("submit", (e)=>{
+  e.preventDefault();
+  const nick = document.getElementById("nickname").value.trim();
   const purpose = document.getElementById("purpose").value;
 
-  if(!nickname) return alert("Podaj pseudonim");
+  if (!nick) { alert("Podaj pseudonim."); return; }
+  if (!purpose) { alert("Wybierz cel rozmowy."); return; }
 
-  // schowaj panel powitalny i formularz
-  document.querySelector(".intro").classList.add("hidden");
-  document.querySelector(".form").classList.add("hidden");
+  // Schowaj panele wejściowe, pokaż czat
+  introSection.classList.add("hidden");
+  formSection.classList.add("hidden");
+  chatSection.classList.remove("hidden");
 
-  // pokaż czat
-  document.getElementById("chat").classList.remove("hidden");
-
-  // komunikat powitalny
+  // Powitalna wiadomość w czacie
   const messages = document.getElementById("messages");
-  const div = document.createElement("div");
-  div.textContent = `Rozpoczynasz rozmowę jako "${nickname}" (cel: ${purpose}).`;
-  div.style.fontStyle = "italic";
-  messages.appendChild(div);
+  const hello = document.createElement("div");
+  hello.style.fontStyle = "italic";
+  hello.textContent = `Rozpoczynasz rozmowę jako „${nick}” (cel: ${opisCelu(purpose)}).`;
+  messages.appendChild(hello);
 });
 
-document.getElementById("chatForm").addEventListener("submit", function(e){
+// Prosty czat lokalny (UI). Backend możesz podpiąć później.
+document.getElementById("chatForm").addEventListener("submit",(e)=>{
   e.preventDefault();
   const input = document.getElementById("messageInput");
-  const text = input.value.trim();
-  if(!text) return;
-
+  const txt = input.value.trim();
+  if (!txt) return;
   const messages = document.getElementById("messages");
-  const div = document.createElement("div");
-  div.textContent = text;
-  messages.appendChild(div);
-
+  const bubble = document.createElement("div");
+  bubble.textContent = txt;
+  messages.appendChild(bubble);
   input.value = "";
   messages.scrollTop = messages.scrollHeight;
 });
+
+function opisCelu(v){
+  if (v==="relacje") return "Nawiązanie relacji";
+  if (v==="wsparcie") return "Szukam wsparcia";
+  if (v==="doswiadczenia") return "Wymiana doświadczeń";
+  return v;
+}
