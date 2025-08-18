@@ -9,34 +9,40 @@ const userList = $("#userList");
 const peerName = $("#peerName");
 const messages = $("#messages");
 
-// wejście z profilem
+// Wejście z profilem
 $("#joinForm").onsubmit = (e) => {
   e.preventDefault();
   const f = e.target;
-  socket.emit("join", { nick: f.nick.value, age: f.age.value, country: f.country.value });
+  socket.emit("join", {
+    nick: f.nick.value,
+    age: f.age.value,
+    country: f.country.value,
+  });
   entry.classList.add("hidden");
   lobby.classList.remove("hidden");
 };
 
-// lista dostępnych w lobby
+// Lista dostępnych (ukryj mnie samego)
 socket.on("users", (list) => {
   userList.innerHTML = "";
-  list.forEach(u => {
-    const li = document.createElement("li");
-    li.textContent = `${u.nick} (${u.age}, ${u.country})`;
-    li.onclick = () => socket.emit("invite", u.id);
-    userList.appendChild(li);
-  });
+  list
+    .filter((u) => u.id !== socket.id)
+    .forEach((u) => {
+      const li = document.createElement("li");
+      li.textContent = `${u.nick} (${u.age}, ${u.country})`;
+      li.onclick = () => socket.emit("invite", u.id);
+      userList.appendChild(li);
+    });
 });
 
-// ktoś mnie zaprosił
+// Zaproszenie do rozmowy
 socket.on("invited", (user) => {
   if (confirm(`Rozmowa z ${user.nick}?`)) {
     socket.emit("accept", user.id);
   }
 });
 
-// para gotowa
+// Sparowanie
 socket.on("paired", (user) => {
   peerId = user.id;
   lobby.classList.add("hidden");
@@ -45,7 +51,7 @@ socket.on("paired", (user) => {
   messages.innerHTML = "";
 });
 
-// wysyłanie wiadomości
+// Wysyłanie wiadomości
 $("#msgForm").onsubmit = (e) => {
   e.preventDefault();
   const input = $("#msgInput");
@@ -56,12 +62,12 @@ $("#msgForm").onsubmit = (e) => {
   input.value = "";
 };
 
-// odbiór wiadomości
+// Odbiór wiadomości
 socket.on("message", (msg) => {
   addMsg("Rozmówca", msg.text);
 });
 
-// koniec rozmowy
+// Zakończenie
 $("#endBtn").onclick = () => socket.emit("end");
 socket.on("ended", () => {
   chat.classList.add("hidden");
@@ -69,7 +75,7 @@ socket.on("ended", () => {
   peerId = null;
 });
 
-function addMsg(who, text){
+function addMsg(who, text) {
   const p = document.createElement("p");
   p.textContent = `${who}: ${text}`;
   messages.appendChild(p);
