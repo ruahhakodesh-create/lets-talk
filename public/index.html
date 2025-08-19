@@ -9,8 +9,7 @@
 </head>
 <body>
 
-  <!-- PANEL WPROWADZAJĄCY -->
-  <section id="intro" class="panel">
+  <section class="panel">
     <p class="intro-text">
       Czujesz się samotny, wstydzisz się kontaktu, szukasz towarzystwa do rozmowy, potrzebujesz pocieszenia lub wsparcia,
       chcesz wymienić się doświadczeniami lub po prostu poznać nowe osoby — w tym miejscu możesz rozmawiać całkowicie anonimowo.
@@ -19,61 +18,27 @@
     </p>
   </section>
 
-  <!-- START: NICK + WYBÓR ROZMÓWCY -->
-  <section id="start" class="panel">
-    <form id="joinForm" autocomplete="off">
-      <label for="nickname">Twój pseudonim</label>
-      <input type="text" id="nickname" placeholder="np. Luna" required />
+  <section class="panel">
+    <form id="startForm" autocomplete="off">
+      <label for="meNick">Twój pseudonim</label>
+      <input id="meNick" type="text" placeholder="np. Luna" required />
 
       <div class="actions">
-        <button type="button" id="randBtn" class="secondary">Losowy rozmówca</button>
+        <button type="button" id="btnRandom" class="ok">Losowy rozmówca</button>
         <div class="search">
-          <input type="text" id="searchNick" placeholder="Szukaj po pseudonimie…" />
-          <button type="button" id="searchBtn">Szukaj</button>
+          <input id="findNick" type="text" placeholder="Szukaj po pseudonimie…" />
+          <button type="button" id="btnFind">Szukaj</button>
         </div>
       </div>
-
-      <button type="submit" id="onlineBtn">Wejdź do lobby</button>
-      <p class="hint">Po wejściu do lobby możesz losować rozmówcę lub zaprosić konkretny pseudonim.</p>
     </form>
   </section>
 
-  <!-- LOBBY: widoczne po dołączeniu -->
-  <section id="lobby" class="panel hidden">
-    <div class="lobby-head">
-      <div id="meBadge"></div>
-      <div class="lobby-actions">
-        <button id="lobbyRand" class="secondary">Losowy rozmówca</button>
-        <div class="search">
-          <input type="text" id="lobbySearchNick" placeholder="Szukaj po pseudonimie…" />
-          <button id="lobbySearchBtn">Szukaj</button>
-        </div>
-      </div>
-    </div>
-    <div id="info" class="info"></div>
-  </section>
-
-  <!-- CZAT – DOMYŚLNIE UKRYTY -->
-  <section id="chat" class="panel hidden">
-    <div class="chat-top">
-      <div>Rozmowa z: <strong id="peerName">—</strong></div>
-      <button id="endBtn" class="danger">Zakończ</button>
-    </div>
-    <div id="messages" class="messages"></div>
-    <form id="chatForm" autocomplete="off">
-      <input id="messageInput" type="text" placeholder="Napisz wiadomość…" required />
-      <button type="submit">Wyślij</button>
-    </form>
-  </section>
-
-  <!-- STOPKA POD CZATEM -->
   <footer class="footer">
-    <a href="terms.html" target="_blank" rel="noopener">Regulamin</a>
-    <span class="sep">|</span>
-    <a href="privacy.html" target="_blank" rel="noopener">Polityka prywatności</a>
+    <a href="terms.html" target="_blank">Regulamin</a><span class="sep">|</span>
+    <a href="privacy.html" target="_blank">Polityka prywatności</a>
   </footer>
 
   <script src="/socket.io/socket.io.js"></script>
-  <script src="app.js"></script>
+  <script src="index.js"></script>
 </body>
 </html>
