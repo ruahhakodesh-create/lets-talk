@@ -1,3 +1,16 @@
+// Blokuj auto-translation UI dla polskiego, pozwól dla innych
+(function(){
+  const isPL = (navigator.language || '').toLowerCase().startsWith('pl');
+  if (isPL) {
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('.panel, .footer').forEach(el => {
+        el.classList.add('notranslate');
+        el.setAttribute('translate','no');
+      });
+    });
+  }
+})();
+
 const socket = io();
 
 const intro   = document.getElementById('intro');
