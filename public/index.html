@@ -2,70 +2,48 @@
 <html lang="pl">
 <head>
   <meta charset="UTF-8" />
-  <meta http-equiv="Content-Language" content="pl" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="Content-Language" content="pl">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Let's Talk</title>
-
-  <!-- Fonty -->
-  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700&family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <!-- Panel nagłówka -->
+  <div class="meeting-header notranslate" translate="no">
+    Let's Talk
+  </div>
 
-  <!-- Let's Talk -->
-  <section class="panel panel-header">
-    <h1 class="meeting-title">Let's Talk</h1>
-  </section>
+  <!-- Panel wprowadzający -->
+  <div class="panel intro">
+    Czujesz się samotny, wstydzisz się kontaktu, szukasz towarzystwa do rozmowy,
+    potrzebujesz pocieszenia lub wsparcia, chcesz wymienić się doświadczeniami
+    lub po prostu poznać nowe osoby – w tym miejscu możesz rozmawiać zupełnie anonimowo.
+    Bez logowania, rejestracji, zbierania twoich danych.  
+    W każdej chwili możesz zakończyć rozmowę, a cała jej treść i wszystkie jej ślady
+    natychmiast znikną.  
+    I co najważniejsze – rozmawiasz zawsze w swoim języku, wszystkie rozmowy są tłumaczone.
+  </div>
 
-  <!-- Intro -->
-  <section class="panel panel-intro" id="intro">
-    <p class="intro-text">
-      Czujesz się samotny, wstydzisz się kontaktu, szukasz towarzystwa do rozmowy, potrzebujesz pocieszenia lub wsparcia,
-      chcesz wymienić się doświadczeniami lub po prostu poznać nowe osoby — w tym miejscu możesz rozmawiać całkowicie anonimowo.
-      Bez logowania, rejestracji ani zbierania danych. W każdej chwili możesz zakończyć rozmowę, a cała jej treść oraz wszystkie
-      elementy znikają natychmiast. Najważniejsze: rozmawiasz zawsze w swoim języku — wszystkie rozmowy są tłumaczone.
-    </p>
-  </section>
+  <!-- Panel wyboru -->
+  <div class="panel choose">
+    <button id="randomChat">Losowy rozmówca</button>
+    <input type="text" id="searchNick" placeholder="Wpisz pseudonim...">
+    <button id="searchBtn">Szukaj</button>
+  </div>
 
-  <!-- Start -->
-  <section class="panel panel-start" id="start">
-    <form id="startForm" autocomplete="off">
-      <label for="nick">Twój pseudonim</label>
-      <input id="nick" type="text" placeholder="np. Luna" required />
+  <!-- Panel czatu -->
+  <div class="panel chat" id="chatPanel" hidden>
+    <div id="messages" class="notranslate"></div>
+    <input type="text" id="messageInput" placeholder="Napisz wiadomość...">
+    <button id="sendBtn">Wyślij</button>
+  </div>
 
-      <div class="actions">
-        <button type="button" id="btnRandom" class="ok">Losowy rozmówca</button>
-        <div class="search">
-          <input id="findNick" type="text" placeholder="Szukaj po pseudonimie…" />
-          <button type="button" id="btnFind">Szukaj</button>
-        </div>
-      </div>
-    </form>
-  </section>
-
-  <!-- Czat -->
-  <section class="panel panel-chat hidden" id="chat">
-    <div class="chat-top">
-      <div>Jesteś: <strong id="meName">—</strong> | Rozmowa z: <strong id="peerName">—</strong></div>
-      <button id="endBtn" class="danger">Zakończ</button>
-    </div>
-
-    <div id="sys" class="msg"></div>
-    <div id="messages" class="messages notranslate"></div>
-
-    <form id="chatForm" autocomplete="off" class="actions">
-      <input id="messageInput" type="text" placeholder="Napisz wiadomość…" required />
-      <button type="submit">Wyślij</button>
-    </form>
-  </section>
-
+  <!-- Stopka -->
   <footer class="footer">
-    <a href="terms.html" target="_blank" rel="noopener">Regulamin</a>
-    <span class="sep">|</span>
-    <a href="privacy.html" target="_blank" rel="noopener">Polityka prywatności</a>
+    <a href="privacy.html">Polityka prywatności</a> | 
+    <a href="terms.html">Regulamin</a>
   </footer>
 
-  <script src="/socket.io/socket.io.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
