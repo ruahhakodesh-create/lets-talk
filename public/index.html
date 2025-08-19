@@ -9,7 +9,8 @@
 </head>
 <body>
 
-  <section class="panel">
+  <!-- Intro -->
+  <section class="panel" id="intro">
     <p class="intro-text">
       Czujesz się samotny, wstydzisz się kontaktu, szukasz towarzystwa do rozmowy, potrzebujesz pocieszenia lub wsparcia,
       chcesz wymienić się doświadczeniami lub po prostu poznać nowe osoby — w tym miejscu możesz rozmawiać całkowicie anonimowo.
@@ -18,10 +19,11 @@
     </p>
   </section>
 
-  <section class="panel">
+  <!-- Start + akcje -->
+  <section class="panel" id="start">
     <form id="startForm" autocomplete="off">
-      <label for="meNick">Twój pseudonim</label>
-      <input id="meNick" type="text" placeholder="np. Luna" required />
+      <label for="nick">Twój pseudonim</label>
+      <input id="nick" type="text" placeholder="np. Luna" required />
 
       <div class="actions">
         <button type="button" id="btnRandom" class="ok">Losowy rozmówca</button>
@@ -33,12 +35,29 @@
     </form>
   </section>
 
+  <!-- Czat (ta sama strona) -->
+  <section class="panel hidden" id="chat">
+    <div class="chat-top">
+      <div>Jesteś: <strong id="meName">—</strong> | Rozmowa z: <strong id="peerName">—</strong></div>
+      <button id="endBtn" class="danger">Zakończ</button>
+    </div>
+
+    <div id="sys" class="msg"></div>
+    <div id="messages" class="messages"></div>
+
+    <form id="chatForm" autocomplete="off" class="actions">
+      <input id="messageInput" type="text" placeholder="Napisz wiadomość…" required />
+      <button type="submit">Wyślij</button>
+    </form>
+  </section>
+
   <footer class="footer">
-    <a href="terms.html" target="_blank">Regulamin</a><span class="sep">|</span>
-    <a href="privacy.html" target="_blank">Polityka prywatności</a>
+    <a href="terms.html" target="_blank" rel="noopener">Regulamin</a>
+    <span class="sep">|</span>
+    <a href="privacy.html" target="_blank" rel="noopener">Polityka prywatności</a>
   </footer>
 
   <script src="/socket.io/socket.io.js"></script>
-  <script src="index.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>
