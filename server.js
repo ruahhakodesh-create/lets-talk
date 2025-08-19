@@ -9,143 +9,131 @@ const io = new Server(server, { cors: { origin: '*' } });
 
 const STATIC_DIR = path.join(__dirname, 'public');
 app.use(express.static(STATIC_DIR));
-app.get('*', (req,res)=> res.sendFile(path.join(STATIC_DIR,'index.html')));
+app.get('*', (req, res) => res.sendFile(path.join(STATIC_DIR, 'index.html')));
 
-// ====== PROSTA LOGIKA MATCHINGU ======
-/**
- * users: Map<socket.id, {nick, busy:false|true, roomId:null|string}>
- * nicks: Map<nickLower, socket.id>
- */
-const users = new Map();
-const nicks = new Map();
+/** Użytkownicy i kojarzenie */
+const users = new Map();          // socket.id -> {nick, busy:false, roomId:null}
+const nicks = new Map();          // lower(nick) -> socket.id
+const randomQueue = [];           // socket.id czekające na losowe
 
-function safeNick(nick){
-  return String(nick||'Anon').slice(0,24).replace(/[<>]/g,'');
+function safeNick(n) { return String(n || 'Anon').slice(0, 24).replace(/[<>]/g, ''); }
+function roomOf(a, b) { return `room:${[a, b].sort().join(':')}`; }
+
+function enqueueRandom(id) {
+  if (!randomQueue.includes(id)) randomQueue.push(id);
+  tryMatchRandom();
 }
-function pickRandomAvailable(exceptId){
-  const pool = [...users.entries()].filter(([sid,u])=> sid!==exceptId && !u.busy);
-  if(!pool.length) return null;
-  const idx = Math.floor(Math.random()*pool.length);
-  const [sid, u] = pool[idx];
-  return { sid, u };
+function tryMatchRandom() {
+  while (randomQueue.length >= 2) {
+    const a = randomQueue.shift();
+    const b = randomQueue.shift();
+    if (!users.has(a) || !users.has(b)) continue;
+    const ua = users.get(a), ub = users.get(b);
+    if (ua.busy || ub.busy) continue;
+    startChat(a, b);
+  }
 }
-function startChat(aId, bId){
-  const roomId = `room:${aId}:${bId}`;
-  const a = users.get(aId); const b = users.get(bId);
-  if(!a || !b) return;
-  a.busy = b.busy = true; a.roomId = b.roomId = roomId;
-
-  const aNick = a.nick, bNick = b.nick;
-  io.to(aId).emit('chat_start', { roomId, partner: bNick });
-  io.to(bId).emit('chat_start', { roomId, partner: aNick });
-
-  io.to(aId).emit('info',{text:`Połączono z: ${bNick}`});
-  io.to(bId).emit('info',{text:`Połączono z: ${aNick}`});
+function startChat(aId, bId) {
+  const a = users.get(aId), b = users.get(bId);
+  if (!a || !b) return;
+  const rid = roomOf(aId, bId);
+  a.busy = b.busy = true; a.roomId = b.roomId = rid;
+  io.to(aId).emit('chat_start', { roomId: rid, partner: b.nick });
+  io.to(bId).emit('chat_start', { roomId: rid, partner: a.nick });
 }
 
-io.on('connection', (socket)=>{
-
-  socket.on('join', ({ nick })=>{
+io.on('connection', (socket) => {
+  /** rejestracja nicka */
+  socket.on('hello', ({ nick }) => {
     const raw = safeNick(nick);
-    let final = raw;
-    const base = raw.toLowerCase();
-
-    // unikalność nicka
-    if(nicks.has(base)){
-      // dodaj sufiks
-      let i=2;
-      while(nicks.has((raw + i).toLowerCase())) i++;
-      final = raw + i;
-    }
-
-    users.set(socket.id, { nick: final, busy:false, roomId:null });
+    let final = raw, base = raw.toLowerCase(), i = 2;
+    while (nicks.has(final.toLowerCase())) { final = raw + i; i++; }
+    users.set(socket.id, { nick: final, busy: false, roomId: null });
     nicks.set(final.toLowerCase(), socket.id);
-    socket.emit('joined', { nick, safeNick: final });
+    socket.emit('hello_ok', { nick: final });
   });
 
-  socket.on('invite_random', ()=>{
+  /** tryb losowy */
+  socket.on('queue_random', () => {
     const me = users.get(socket.id);
-    if(!me){ socket.emit('info',{text:'Najpierw wejdź do lobby.'}); return; }
-    if(me.busy){ socket.emit('info',{text:'Już jesteś w rozmowie.'}); return; }
-
-    const pick = pickRandomAvailable(socket.id);
-    if(!pick){ socket.emit('invite_fail',{reason:'Brak dostępnych rozmówców.'}); return; }
-
-    const targetId = pick.sid;
-    const target = pick.u;
-    io.to(targetId).emit('invited', { from: me.nick });
-    socket.emit('invite_sent', { to: target.nick });
-    // oczekiwanie na odpowiedź w 'invite_response'
-    target.pendingFrom = socket.id;
+    if (!me) return;
+    if (me.busy) return;
+    enqueueRandom(socket.id);
+    socket.emit('info', { text: 'Czekasz na losowego rozmówcę…' });
   });
 
-  socket.on('invite_nick', ({ target })=>{
+  /** zaproszenie po nicku */
+  socket.on('invite_nick', ({ target }) => {
     const me = users.get(socket.id);
-    if(!me){ socket.emit('info',{text:'Najpierw wejdź do lobby.'}); return; }
-    if(me.busy){ socket.emit('info',{text:'Już jesteś w rozmowie.'}); return; }
+    if (!me) return;
+    if (me.busy) { socket.emit('invite_fail', { reason: 'Już jesteś w rozmowie.' }); return; }
 
-    const tId = nicks.get(String(target||'').toLowerCase());
-    if(!tId || !users.has(tId)) { socket.emit('invite_fail',{reason:'Taki pseudonim nie jest dostępny.'}); return; }
+    const tId = nicks.get(String(target || '').toLowerCase());
+    if (!tId || !users.has(tId)) { socket.emit('invite_fail', { reason: 'Użytkownik niedostępny.' }); return; }
     const t = users.get(tId);
-    if(t.busy){ socket.emit('invite_fail',{reason:'Użytkownik jest w rozmowie.'}); return; }
+    if (t.busy) { socket.emit('invite_fail', { reason: 'Użytkownik jest w rozmowie.' }); return; }
 
     io.to(tId).emit('invited', { from: me.nick });
     socket.emit('invite_sent', { to: t.nick });
     t.pendingFrom = socket.id;
   });
 
-  socket.on('invite_response', ({ from, accept })=>{
+  /** odpowiedź na zaproszenie */
+  socket.on('invite_response', ({ from, accept }) => {
     const me = users.get(socket.id);
-    if(!me) return;
-    const fromId = nicks.get(String(from||'').toLowerCase());
-    if(!fromId || !users.has(fromId)) return;
-
-    const inviter = users.get(fromId);
-    // sprawdź, czy to faktycznie oczekiwane zaproszenie
-    if(me.pendingFrom !== fromId){ return; }
+    if (!me) return;
+    const fromId = nicks.get(String(from || '').toLowerCase());
+    if (!fromId || !users.has(fromId)) return;
+    if (me.pendingFrom !== fromId) return;
     me.pendingFrom = undefined;
 
-    if(!accept){
-      io.to(fromId).emit('invite_fail',{reason:`${me.nick} odrzucił zaproszenie.`});
-      return;
-    }
-    if(inviter.busy || me.busy){
-      io.to(fromId).emit('invite_fail',{reason:'Ktoś zajął rozmowę wcześniej.'});
-      return;
-    }
+    if (!accept) { io.to(fromId).emit('invite_fail', { reason: `${me.nick} odrzucił zaproszenie.` }); return; }
+    const inv = users.get(fromId);
+    if (!inv || inv.busy || me.busy) { io.to(fromId).emit('invite_fail', { reason: 'Zaproszenie nieaktualne.' }); return; }
     startChat(fromId, socket.id);
   });
 
-  socket.on('message', ({ roomId, text })=>{
+  /** wiadomość */
+  socket.on('message', ({ roomId, text }) => {
     const me = users.get(socket.id);
-    if(!me || me.roomId !== roomId) return;
-    const peerId = [...users.entries()].find(([sid,u])=> u.roomId===roomId && sid!==socket.id)?.[0];
-    if(peerId) io.to(peerId).emit('message', { text, from: me.nick });
+    if (!me || me.roomId !== roomId) return;
+    for (const [sid, u] of users.entries()) {
+      if (u.roomId === roomId && sid !== socket.id) {
+        io.to(sid).emit('message', { text, from: me.nick });
+      }
+    }
   });
 
-  socket.on('chat_end', ({ roomId })=>{
+  /** zakończenie rozmowy */
+  socket.on('chat_end', ({ roomId }) => {
     const me = users.get(socket.id);
-    if(!me || me.roomId !== roomId) return;
-    const peerId = [...users.entries()].find(([sid,u])=> u.roomId===roomId && sid!==socket.id)?.[0];
-
-    me.busy=false; me.roomId=null;
-    if(peerId && users.has(peerId)){ const p=users.get(peerId); p.busy=false; p.roomId=null; io.to(peerId).emit('chat_ended',{reason:'Druga strona zakończyła rozmowę.'}); }
-    io.to(socket.id).emit('chat_ended',{reason:'Rozmowę zakończono.'});
+    if (!me || me.roomId !== roomId) return;
+    for (const [sid, u] of users.entries()) {
+      if (u.roomId === roomId) { u.busy = false; u.roomId = null; if (sid !== socket.id) io.to(sid).emit('chat_ended', { reason: 'Rozmówca zakończył rozmowę.' }); }
+    }
+    io.to(socket.id).emit('chat_ended', { reason: 'Rozmowa zakończona.' });
   });
 
-  socket.on('disconnect', ()=>{
+  socket.on('disconnect', () => {
+    // usuń z kolejki losowej
+    const idx = randomQueue.indexOf(socket.id);
+    if (idx >= 0) randomQueue.splice(idx, 1);
+
     const me = users.get(socket.id);
-    if(!me){ return; }
-    // jeśli w rozmowie, powiadom partnera
-    if(me.roomId){
-      const peerId = [...users.entries()].find(([sid,u])=> u.roomId===me.roomId && sid!==socket.id)?.[0];
-      if(peerId && users.has(peerId)){ const p=users.get(peerId); p.busy=false; p.roomId=null; io.to(peerId).emit('chat_ended',{reason:'Rozmówca się rozłączył.'}); }
+    if (!me) return;
+    // jeśli był w pokoju, powiadom partnera
+    if (me.roomId) {
+      for (const [sid, u] of users.entries()) {
+        if (u.roomId === me.roomId && sid !== socket.id) {
+          u.busy = false; u.roomId = null;
+          io.to(sid).emit('chat_ended', { reason: 'Rozmówca się rozłączył.' });
+        }
+      }
     }
     nicks.delete(me.nick.toLowerCase());
     users.delete(socket.id);
   });
-
 });
 
 const PORT = process.env.PORT || 3000;
-server.listen(PORT, ()=> console.log('Let’s Talk up on', PORT));
+server.listen(PORT, () => console.log('Let’s Talk running on', PORT));
