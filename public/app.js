@@ -28,27 +28,23 @@ function add(t, me=false){
   box.appendChild(d);
   box.scrollTop = box.scrollHeight;
 }
-
 function showChat(){
   intro.classList.add('hidden');
   start.classList.add('hidden');
   chatSec.classList.remove('hidden');
 }
-
 function ensureHello(cb){
   const me = nickIn.value.trim();
   if(!me){ alert('Podaj pseudonim.'); return; }
-  if(!helloDone){
-    pending = cb;
-    socket.emit('hello',{nick:me});
-  }else cb();
+  if(!helloDone){ pending=cb; socket.emit('hello',{nick:me}); }
+  else cb();
 }
 
 socket.on('hello_ok', ({nick})=>{
   helloDone = true;
   meName.textContent = nick;
   showChat();
-  if(pending){ const fn=pending; pending=null; fn(); }
+  if(pending){ const f=pending; pending=null; f(); }
 });
 
 btnRandom.addEventListener('click', ()=>{
@@ -57,7 +53,6 @@ btnRandom.addEventListener('click', ()=>{
     socket.emit('queue_random');
   });
 });
-
 btnFind.addEventListener('click', ()=>{
   const target = findNick.value.trim();
   if(!target){ alert('Podaj pseudonim do wyszukania.'); return; }
@@ -72,7 +67,6 @@ socket.on('invited', ({from})=>{
   socket.emit('invite_response',{from,accept:!!ok});
   if(!ok) add(`Odrzucono zaproszenie od: ${from}.`);
 });
-
 socket.on('invite_sent', ({to})=> add(`Wysłano zaproszenie do: ${to}. Oczekiwanie…`));
 socket.on('invite_fail', ({reason})=> add(`Nie udało się połączyć: ${reason}`));
 socket.on('info', ({text})=> sys.textContent = text || '';
@@ -84,9 +78,7 @@ socket.on('chat_start', ({roomId:rid, partner})=>{
   box.innerHTML = '';
   add(`Połączono z: ${partner}`);
 });
-
 socket.on('message', ({text,from})=> add(from?`${from}: ${text}`:text));
-
 socket.on('chat_ended', ({reason})=>{
   add(reason||'Rozmowa zakończona.');
   roomId = null;
@@ -100,7 +92,6 @@ chatForm.addEventListener('submit', e=>{
   add(`Ty: ${t}`, true);
   msgIn.value='';
 });
-
 endBtn.addEventListener('click', ()=>{
   if(roomId) socket.emit('chat_end',{roomId});
   add('Zakończyłeś rozmowę.');
