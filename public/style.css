@@ -1,9 +1,10 @@
 :root{
-  --ink:#2a0d50;            /* ciemny fiolet */
-  --panel:#fde7f3e6;        /* lekko różowy panel (z alfa) */
+  --ink:#2a0d50;
+  --panel:#fde7f3e6;
   --border:#f3cfe3;
   --btn1:#9333ea;
   --btn2:#ec4899;
+  --ok1:#14b8a6; --ok2:#22c55e;
   --danger:#ef4444;
 }
 
@@ -16,32 +17,22 @@ body{
   display:flex;flex-direction:column;align-items:center;
 }
 
-/* PANELE */
 .panel{
-  width:100%;max-width:880px;
-  background:var(--panel);
-  border:1px solid var(--border);
-  border-radius:18px;
+  width:100%;max-width:880px;background:var(--panel);
+  border:1px solid var(--border);border-radius:18px;
   box-shadow:0 8px 24px rgba(0,0,0,.12);
-  padding:26px 30px;
-  margin:34px 16px 0;
+  padding:26px 30px;margin:34px 16px 0;
 }
+.intro-text{margin:0;font-size:20px;line-height:1.85}
 
-/* TEKST INTRO */
-.intro-text{
-  margin:0;font-size:20px;line-height:1.85;color:var(--ink);
-}
-
-/* FORMULARZ START */
-#joinForm{display:grid;gap:14px}
+form{display:grid;gap:14px}
 label{font-weight:600}
-input,select{
+input{
   padding:12px 14px;border:2px solid var(--border);
   border-radius:12px;font-size:16px;background:#fff
 }
-input:focus,select:focus{
-  outline:none;border-color:#c084fc;box-shadow:0 0 0 4px rgba(192,132,252,.25)
-}
+input:focus{outline:none;border-color:#c084fc;box-shadow:0 0 0 4px rgba(192,132,252,.25)}
+
 button{
   padding:12px 18px;border:none;border-radius:12px;color:#fff;
   background:linear-gradient(135deg,var(--btn1),var(--btn2));
@@ -50,51 +41,25 @@ button{
 }
 button:hover{filter:brightness(1.06)}
 button:active{transform:translateY(1px)}
-button.secondary{
-  color:#fff;background:linear-gradient(135deg,#14b8a6,#22c55e)
-}
-button.danger{
-  color:#fff;background:linear-gradient(135deg,var(--danger),#fb7185)
-}
-.hint{opacity:.8;font-size:13px}
+button.ok{background:linear-gradient(135deg,var(--ok1),var(--ok2))}
+button.danger{background:linear-gradient(135deg,var(--danger),#fb7185)}
 
-/* AKCJE */
-.actions,.lobby-actions{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.actions{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
 .search{display:flex;gap:8px}
-.search input{min-width:220px}
-
-/* LOBBY */
-#lobby .info{margin-top:10px;font-size:14px;opacity:.95}
-.lobby-head{display:flex;justify-content:space-between;gap:12px;align-items:center}
-#meBadge{font-weight:700}
+.search input{min-width:240px}
 
 /* CZAT */
-#chat{max-width:700px}
+#chatbox{max-width:820px}
 .chat-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
 .messages{
-  height:320px;overflow:auto;background:#fff;
-  border:1px solid var(--border);border-radius:12px;
-  padding:10px;margin-bottom:10px
+  height:320px;overflow:auto;background:#fff;border:1px solid var(--border);
+  border-radius:12px;padding:10px;margin-bottom:10px
 }
-.msg{margin:6px 0}
-.msg.me{font-weight:600}
+.msg{margin:6px 0}.msg.me{font-weight:600}
 
-/* STOPKA */
-.footer{
-  width:100%;text-align:center;margin:26px 0 28px;font-size:15px
-}
-.footer a{
-  color:var(--ink);text-decoration:underline;font-weight:600;
-  transition:color .2s ease, filter .2s ease
-}
+.footer{width:100%;text-align:center;margin:26px 0 28px;font-size:15px}
+.footer a{color:var(--ink);text-decoration:underline;font-weight:600;transition:color .2s ease,filter .2s ease}
 .footer a:hover{color:var(--btn2);filter:brightness(1.2)}
 .footer .sep{margin:0 8px;color:var(--ink)}
 
-/* UKRYWANIE */
 .hidden{display:none !important}
-[hidden]{display:none !important}
-
-@media (max-width:520px){
-  .panel{padding:22px;margin-top:26px}
-  .messages{height:260px}
-}
