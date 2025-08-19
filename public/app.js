@@ -1,145 +1,105 @@
 const socket = io();
 
-// Sekcje / elementy
 const intro   = document.getElementById('intro');
 const start   = document.getElementById('start');
-const lobby   = document.getElementById('lobby');
-const chat    = document.getElementById('chat');
+const chatSec = document.getElementById('chat');
 
-const meBadge = document.getElementById('meBadge');
-const infoBox = document.getElementById('info');
+const nickIn  = document.getElementById('nick');
+const btnRandom = document.getElementById('btnRandom');
+const btnFind   = document.getElementById('btnFind');
+const findNick  = document.getElementById('findNick');
+
+const meName  = document.getElementById('meName');
 const peerName= document.getElementById('peerName');
-
-const joinForm = document.getElementById('joinForm');
-const nickInput= document.getElementById('nickname');
-
-const randBtn        = document.getElementById('randBtn');
-const searchBtn      = document.getElementById('searchBtn');
-const searchNick     = document.getElementById('searchNick');
-const onlineBtn      = document.getElementById('onlineBtn');
-
-const lobbyRand      = document.getElementById('lobbyRand');
-const lobbySearchBtn = document.getElementById('lobbySearchBtn');
-const lobbySearchNick= document.getElementById('lobbySearchNick');
-
-const messages = document.getElementById('messages');
-const chatForm = document.getElementById('chatForm');
-const messageInput = document.getElementById('messageInput');
+const sys     = document.getElementById('sys');
+const box     = document.getElementById('messages');
+const chatForm= document.getElementById('chatForm');
+const msgIn   = document.getElementById('messageInput');
 const endBtn  = document.getElementById('endBtn');
 
-let myNick = null;
 let roomId = null;
+let helloDone = false;
 
-// Wejście do lobby (rejestracja nicka)
-joinForm.addEventListener('submit', (e)=>{
-  e.preventDefault();
-  const nick = nickInput.value.trim();
-  if(!nick){ alert('Podaj pseudonim.'); return; }
-  myNick = nick;
-  socket.emit('join', { nick: myNick });
-});
+function ensureHello(cb){
+  const me = nickIn.value.trim();
+  if(!me){ alert('Podaj pseudonim.'); return; }
+  if(!helloDone){
+    socket.emit('hello',{nick:me});
+    // reszta poleci po hello_ok
+    pending = cb;
+  }else{
+    cb();
+  }
+}
+let pending = null;
 
-// Szybkie akcje ze strony startowej (działają dopiero po dołączeniu)
-randBtn.addEventListener('click', ()=>tryBeforeJoin(()=> socket.emit('invite_random')));
-searchBtn.addEventListener('click', ()=>{
-  tryBeforeJoin(()=>{
-    const target = (searchNick.value||'').trim();
-    if(!target){ alert('Podaj pseudonim do wyszukania.'); return; }
-    socket.emit('invite_nick',{ target });
-  });
-});
-onlineBtn.addEventListener('click', (e)=>{ /* tylko walidacja nicka przez submit */ });
-
-// W lobby
-lobbyRand.addEventListener('click', ()=> socket.emit('invite_random'));
-lobbySearchBtn.addEventListener('click', ()=>{
-  const target = (lobbySearchNick.value||'').trim();
-  if(!target){ alert('Podaj pseudonim.'); return; }
-  socket.emit('invite_nick',{ target });
-});
-
-// Czat
-chatForm.addEventListener('submit', (e)=>{
-  e.preventDefault();
-  const text = messageInput.value.trim();
-  if(!text || !roomId) return;
-  socket.emit('message', { roomId, text });
-  appendMsg(text, true);
-  messageInput.value = '';
-});
-endBtn.addEventListener('click', ()=>{
-  if(roomId) socket.emit('chat_end', { roomId });
-  resetToLobby('Rozmowa zakończona.');
-});
-
-// ====== SOCKET.IO ZDARZENIA ======
-socket.on('joined', ({ nick, safeNick })=>{
-  myNick = safeNick || nick;
-  meBadge.textContent = `Jesteś: ${myNick}`;
+socket.on('hello_ok', ({nick})=>{
+  helloDone = true;
+  meName.textContent = nick;
+  // przejście do czatu UI
   intro.classList.add('hidden');
   start.classList.add('hidden');
-  lobby.classList.remove('hidden');
-  info('Dołączono do lobby. Wybierz „Losowy rozmówca” lub wyszukaj pseudonim.');
+  chatSec.classList.remove('hidden');
+  if(pending){ const fn=pending; pending=null; fn(); }
 });
 
-socket.on('nick_error', ({ reason })=>{
-  alert(reason || 'Błąd pseudonimu');
+btnRandom.addEventListener('click', ()=>{
+  ensureHello(()=> {
+    sys.textContent = 'Czekasz na losowego rozmówcę…';
+    socket.emit('queue_random');
+  });
 });
 
-socket.on('invited', ({ from })=>{
-  const ok = confirm(`Zaproszenie do rozmowy od: ${from}. Przyjąć?`);
-  socket.emit('invite_response', { from, accept: !!ok });
-  if(!ok) info(`Odrzucono zaproszenie od: ${from}.`);
+btnFind.addEventListener('click', ()=>{
+  const target = findNick.value.trim();
+  if(!target){ alert('Podaj pseudonim do wyszukania.'); return; }
+  ensureHello(()=> {
+    sys.textContent = `Wysyłam zaproszenie do: ${target}…`;
+    socket.emit('invite_nick',{target});
+  });
 });
 
-socket.on('invite_sent', ({ to })=>{
-  info(`Wysłano zaproszenie do: ${to}. Oczekiwanie na odpowiedź…`);
+socket.on('invited', ({from})=>{
+  const ok = confirm(`Zaproszenie od: ${from}. Przyjąć?`);
+  socket.emit('invite_response',{from,accept:!!ok});
+  if(!ok) add(`Odrzucono zaproszenie od: ${from}.`);
 });
 
-socket.on('invite_fail', ({ reason })=>{
-  info(`Nie udało się wysłać zaproszenia: ${reason}`);
-});
+socket.on('invite_sent', ({to})=> add(`Wysłano zaproszenie do: ${to}. Oczekiwanie…`));
+socket.on('invite_fail', ({reason})=> add(`Nie udało się połączyć: ${reason}`));
 
-socket.on('chat_start', ({ roomId:rid, partner })=>{
+socket.on('chat_start', ({roomId:rid, partner})=>{
   roomId = rid;
-  lobby.classList.add('hidden');
-  chat.classList.remove('hidden');
+  sys.textContent = '';
   peerName.textContent = partner;
-  messages.innerHTML = '';
-  appendSys(`Połączono z: ${partner}`);
+  box.innerHTML = '';
+  add(`Połączono z: ${partner}`);
 });
 
-socket.on('message', ({ text, from })=>{
-  appendMsg(from ? `${from}: ${text}` : text, false);
-});
-
-socket.on('chat_ended', ({ reason })=>{
-  resetToLobby(reason || 'Rozmowa zakończona.');
-});
-
-socket.on('info', ({ text })=> info(text));
-
-// ====== POMOCNICZE ======
-function tryBeforeJoin(fn){
-  const nick = nickInput.value.trim();
-  if(!nick){ alert('Najpierw wpisz swój pseudonim i wejdź do lobby.'); return; }
-  if(!myNick){ socket.emit('join', { nick }); }
-  setTimeout(fn, 100);
-}
-function appendMsg(t, me=false){
-  const d = document.createElement('div');
-  d.className = 'msg' + (me ? ' me' : '');
-  d.textContent = me ? `Ty: ${t}` : t;
-  messages.appendChild(d);
-  messages.scrollTop = messages.scrollHeight;
-}
-function appendSys(t){ appendMsg(t,false); }
-function info(t){
-  infoBox.textContent = t || '';
-}
-function resetToLobby(msg){
+socket.on('message', ({text,from})=> add(from?`${from}: ${text}`:text));
+socket.on('chat_ended', ({reason})=>{
+  add(reason||'Rozmowa zakończona.');
   roomId = null;
-  chat.classList.add('hidden');
-  lobby.classList.remove('hidden');
-  info(msg);
+});
+
+chatForm.addEventListener('submit', e=>{
+  e.preventDefault();
+  if(!roomId) return;
+  const t = msgIn.value.trim(); if(!t) return;
+  socket.emit('message',{roomId,text:t});
+  add(`Ty: ${t}`, true);
+  msgIn.value='';
+});
+endBtn.addEventListener('click', ()=>{
+  if(roomId) socket.emit('chat_end',{roomId});
+  add('Zakończyłeś rozmowę.');
+  roomId=null;
+});
+
+function add(t,me=false){
+  const d=document.createElement('div');
+  d.className='msg'+(me?' me':'');
+  d.textContent=t;
+  box.appendChild(d);
+  box.scrollTop = box.scrollHeight;
 }
