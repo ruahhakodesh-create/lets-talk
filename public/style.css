@@ -1,13 +1,12 @@
 :root{
   --ink:#2a0d50;
   --panel:#fde7f3e6;        /* różowe panele */
-  --panel-tq:#ccf5f3e6;     /* turkusowy panel nagłówka */
+  --panel-tq:#ccf5f3e6;     /* turkus strefy spotkań */
   --border:#f3cfe3;
   --btn1:#9333ea; --btn2:#ec4899;
   --ok1:#14b8a6; --ok2:#22c55e;
   --danger:#ef4444;
 }
-
 *{box-sizing:border-box}
 html,body{height:100%;margin:0}
 body{
@@ -16,8 +15,6 @@ body{
   color:var(--ink);
   display:flex; flex-direction:column; align-items:center;
 }
-
-/* Uniwersalny panel */
 .panel{
   width:100%; max-width:980px;
   border:1px solid var(--border);
@@ -28,62 +25,48 @@ body{
   background:var(--panel);
 }
 
-/* 1) Strefa spotkań (turkus) */
-.panel-header{
-  background:var(--panel-tq);
-  text-align:center;
-}
-.meeting-title {
-  font-family: 'Baloo 2', cursive;
-  font-size: 4rem;              /* większy rozmiar */
-  font-weight: 700;
-  margin: 0;
-  letter-spacing: .5px;
-
-  /* pastelowy gradient z przezroczystością */
-  background: linear-gradient(90deg, rgba(244,114,182,0.7), rgba(192,132,252,0.7));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  text-fill-color: transparent;
-
-  /* zamglony cień */
-  text-shadow: 0 4px 12px rgba(192,132,252,0.25),
-               0 2px 6px rgba(236,72,153,0.25);
+/* Strefa spotkań */
+.panel-header{ background:var(--panel-tq); text-align:center }
+.meeting-title{
+  font-family:'Baloo 2', cursive;
+  font-size:4rem;                    /* większy */
+  font-weight:700;
+  margin:0;
+  letter-spacing:.5px;
+  background:linear-gradient(90deg, rgba(244,114,182,.7), rgba(192,132,252,.7));
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  background-clip:text; text-fill-color:transparent;
+  text-shadow:0 4px 12px rgba(192,132,252,.25), 0 2px 6px rgba(236,72,153,.25);
 }
 
-
-/* 2) Intro (róż) */
-.panel-intro{ background:var(--panel); }
+/* Intro */
+.panel-intro{ background:var(--panel) }
 .intro-text{ margin:0; font-size:20px; line-height:1.85 }
 
-/* 3) Start (róż) */
-.panel-start{ background:var(--panel); }
+/* Start */
+.panel-start{ background:var(--panel) }
 form{display:grid; gap:14px}
 label{font-weight:600}
 input{
   padding:12px 14px; border:2px solid var(--border);
   border-radius:12px; font-size:16px; background:#fff
 }
-input:focus{
-  outline:none; border-color:#c084fc; box-shadow:0 0 0 4px rgba(192,132,252,.25)
-}
+input:focus{ outline:none; border-color:#c084fc; box-shadow:0 0 0 4px rgba(192,132,252,.25) }
 .actions{display:flex; gap:12px; align-items:center; flex-wrap:wrap}
 .search{display:flex; gap:8px}
 .search input{min-width:240px}
-
 button{
   padding:12px 18px; border:none; border-radius:12px; color:#fff;
   background:linear-gradient(135deg,var(--btn1),var(--btn2));
   font-weight:700; font-size:16px; cursor:pointer;
-  transition:transform .05s,filter .15s
+  transition:transform .05s, filter .15s
 }
 button:hover{filter:brightness(1.06)}
 button:active{transform:translateY(1px)}
 button.ok{background:linear-gradient(135deg,var(--ok1),var(--ok2))}
 button.danger{background:linear-gradient(135deg,var(--danger),#fb7185)}
 
-/* 4) Czat */
+/* Czat */
 .panel-chat{ background:var(--panel); max-width:880px }
 .chat-top{display:flex; justify-content:space-between; align-items:center; margin-bottom:8px}
 .messages{
@@ -99,11 +82,14 @@ button.danger{background:linear-gradient(135deg,var(--danger),#fb7185)}
 .footer a:hover{ color:var(--btn2); filter:brightness(1.2) }
 .footer .sep{ margin:0 8px; color:var(--ink) }
 
-/* Narzędziowe */
+/* Strony prawne */
+body.legal .panel{max-width:900px}
+
+/* Narzędzia */
 .hidden{display:none !important}
 
 @media (max-width:560px){
   .panel{padding:22px}
-  .meeting-title{font-size:2.6rem}
+  .meeting-title{font-size:2.8rem}
   .messages{height:260px}
 }
