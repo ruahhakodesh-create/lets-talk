@@ -21,10 +21,17 @@ let roomId = null;
 let helloDone = false;
 let pending = null;
 
-function add(t, me=false){
+function addLine(html){
   const d=document.createElement('div');
-  d.className='msg'+(me?' me':'');
-  d.textContent=t;
+  d.className='msg';
+  d.innerHTML = html;
+  box.appendChild(d);
+  box.scrollTop = box.scrollHeight;
+}
+function addMine(text){
+  const d=document.createElement('div');
+  d.className='msg me';
+  d.textContent = `Ty: ${text}`;
   box.appendChild(d);
   box.scrollTop = box.scrollHeight;
 }
@@ -33,10 +40,13 @@ function showChat(){
   start.classList.add('hidden');
   chatSec.classList.remove('hidden');
 }
+function myLang(){
+  return (navigator.language || 'pl').toLowerCase().split('-')[0];
+}
 function ensureHello(cb){
   const me = nickIn.value.trim();
   if(!me){ alert('Podaj pseudonim.'); return; }
-  if(!helloDone){ pending=cb; socket.emit('hello',{nick:me}); }
+  if(!helloDone){ pending=cb; socket.emit('hello',{nick:me, lang: myLang()}); }
   else cb();
 }
 
@@ -65,10 +75,10 @@ btnFind.addEventListener('click', ()=>{
 socket.on('invited', ({from})=>{
   const ok = confirm(`Zaproszenie od: ${from}. Przyjąć?`);
   socket.emit('invite_response',{from,accept:!!ok});
-  if(!ok) add(`Odrzucono zaproszenie od: ${from}.`);
+  if(!ok) addLine(`Odrzucono zaproszenie od: <strong>${from}</strong>.`);
 });
-socket.on('invite_sent', ({to})=> add(`Wysłano zaproszenie do: ${to}. Oczekiwanie…`));
-socket.on('invite_fail', ({reason})=> add(`Nie udało się połączyć: ${reason}`));
+socket.on('invite_sent', ({to})=> addLine(`Wysłano zaproszenie do: <strong>${to}</strong>. Oczekiwanie…`));
+socket.on('invite_fail', ({reason})=> addLine(`Nie udało się połączyć: ${reason}`));
 socket.on('info', ({text})=> sys.textContent = text || '';
 
 socket.on('chat_start', ({roomId:rid, partner})=>{
@@ -76,11 +86,18 @@ socket.on('chat_start', ({roomId:rid, partner})=>{
   sys.textContent = '';
   peerName.textContent = partner;
   box.innerHTML = '';
-  add(`Połączono z: ${partner}`);
+  addLine(`Połączono z: <strong>${partner}</strong>`);
 });
-socket.on('message', ({text,from})=> add(from?`${from}: ${text}`:text));
+
+// Serwer wysyła: { text, text_tr?, from, lang_from, lang_to }
+socket.on('message', (m)=>{
+  const show = m.text_tr || m.text;
+  const extra = m.text_tr ? `<div style="opacity:.7;font-size:.9em">Oryg.: ${escapeHtml(m.text)}</div>` : '';
+  addLine(`<strong>${escapeHtml(m.from)}:</strong> ${escapeHtml(show)}${extra}`);
+});
+
 socket.on('chat_ended', ({reason})=>{
-  add(reason||'Rozmowa zakończona.');
+  addLine(reason||'Rozmowa zakończona.');
   roomId = null;
 });
 
@@ -89,11 +106,17 @@ chatForm.addEventListener('submit', e=>{
   if(!roomId) return;
   const t = msgIn.value.trim(); if(!t) return;
   socket.emit('message',{roomId,text:t});
-  add(`Ty: ${t}`, true);
+  addMine(t);
   msgIn.value='';
 });
 endBtn.addEventListener('click', ()=>{
   if(roomId) socket.emit('chat_end',{roomId});
-  add('Zakończyłeś rozmowę.');
+  addLine('Zakończyłeś rozmowę.');
   roomId=null;
 });
+
+function escapeHtml(s){
+  return String(s).replace(/[&<>"']/g, m => ({
+    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+  }[m]));
+}
