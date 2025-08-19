@@ -52,7 +52,7 @@ button.danger{background:linear-gradient(135deg,var(--danger),#fb7185)}
 .meeting-title {
   font-family: 'Quicksand', 'Baloo 2', cursive, sans-serif;
   font-size: 50px;
-  font-weight: 600;
+  font-weight: 700;
   margin: 0;
   background: linear-gradient(90deg, #f472b6, #c084fc); /* różowo-fioletowy */
   -webkit-background-clip: text;
