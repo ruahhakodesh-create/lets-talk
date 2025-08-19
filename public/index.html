@@ -1,68 +1,53 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Let's Talk</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
+
+  <!-- Styl główny -->
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Import fontów artystycznych -->
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@600;700&family=Baloo+2:wght@600&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- Strefa spotkań -->
-  <section class="panel meeting">
-    <h1 class="meeting-title">Strefa spotkań</h1>
-  </section>
-
-
-  <!-- Intro -->
-  <section class="panel" id="intro">
-    <p class="intro-text">
-      Czujesz się samotny, wstydzisz się kontaktu, szukasz towarzystwa do rozmowy, potrzebujesz pocieszenia lub wsparcia,
-      chcesz wymienić się doświadczeniami lub po prostu poznać nowe osoby — w tym miejscu możesz rozmawiać całkowicie anonimowo.
-      Bez logowania, rejestracji ani zbierania danych. W każdej chwili możesz zakończyć rozmowę, a cała jej treść oraz wszystkie
-      elementy znikają natychmiast. Najważniejsze: rozmawiasz zawsze w swoim języku — wszystkie rozmowy są tłumaczone.
-    </p>
-  </section>
-
-  <!-- Start + akcje -->
-  <section class="panel" id="start">
-    <form id="startForm" autocomplete="off">
-      <label for="nick">Twój pseudonim</label>
-      <input id="nick" type="text" placeholder="np. Luna" required />
-
-      <div class="actions">
-        <button type="button" id="btnRandom" class="ok">Losowy rozmówca</button>
-        <div class="search">
-          <input id="findNick" type="text" placeholder="Szukaj po pseudonimie…" />
-          <button type="button" id="btnFind">Szukaj</button>
-        </div>
-      </div>
-    </form>
-  </section>
-
-  <!-- Czat (ta sama strona) -->
-  <section class="panel hidden" id="chat">
-    <div class="chat-top">
-      <div>Jesteś: <strong id="meName">—</strong> | Rozmowa z: <strong id="peerName">—</strong></div>
-      <button id="endBtn" class="danger">Zakończ</button>
+  <div class="container">
+    <!-- Panel nagłówkowy -->
+    <div class="panel panel-header">
+      <h1 class="meeting-zone">Strefa spotkań</h1>
     </div>
 
-    <div id="sys" class="msg"></div>
-    <div id="messages" class="messages"></div>
+    <!-- Panel wprowadzający -->
+    <div class="panel panel-intro">
+      <p>
+        Czujesz się samotny, wstydzisz się kontaktu, szukasz towarzystwa do rozmowy,
+        potrzebujesz pocieszenia lub wsparcia, chcesz wymienić się doświadczeniami lub
+        po prostu poznać nowe osoby — w tym miejscu możesz rozmawiać całkowicie anonimowo.
+      </p>
+      <p>
+        Bez logowania, rejestracji ani zbierania danych. W każdej chwili możesz zakończyć
+        rozmowę, a cała jej treść oraz wszystkie elementy znikają natychmiast.
+        Najważniejsze: rozmawiasz zawsze w swoim języku — wszystkie rozmowy są tłumaczone.
+      </p>
+    </div>
 
-    <form id="chatForm" autocomplete="off" class="actions">
-      <input id="messageInput" type="text" placeholder="Napisz wiadomość…" required />
-      <button type="submit">Wyślij</button>
-    </form>
-  </section>
+    <!-- Panel logowania / wyboru -->
+    <div class="panel panel-login">
+      <label for="nickname">Twój pseudonim</label>
+      <input type="text" id="nickname" placeholder="np. Luna">
 
-  <footer class="footer">
-    <a href="terms.html" target="_blank" rel="noopener">Regulamin</a>
-    <span class="sep">|</span>
-    <a href="privacy.html" target="_blank" rel="noopener">Polityka prywatności</a>
-  </footer>
+      <div class="actions">
+        <button class="btn-random">Losowy rozmówca</button>
+        <input type="text" id="searchNick" placeholder="Szukaj po pseudonimie…">
+        <button class="btn-search">Szukaj</button>
+      </div>
+    </div>
 
-  <script src="/socket.io/socket.io.js"></script>
-  <script src="app.js"></script>
+    <!-- Stopka -->
+    <footer>
+      <a href="#">Regulamin</a> | <a href="#">Polityka prywatności</a>
+    </footer>
+  </div>
 </body>
 </html>
