@@ -33,18 +33,25 @@ body{
   background:var(--panel-tq);
   text-align:center;
 }
-.meeting-title{
-  font-family:'Baloo 2', cursive;
-  font-size:3.25rem;              /* powiększanie: 3rem–4rem */
-  font-weight:700;
-  margin:0;
-  letter-spacing:.5px;
-  background:linear-gradient(90deg,#f472b6,#c084fc); /* jasny róż→fiolet */
-  -webkit-background-clip:text;
-  -webkit-text-fill-color:transparent;
-  background-clip:text;
-  text-fill-color:transparent;
+.meeting-title {
+  font-family: 'Baloo 2', cursive;
+  font-size: 4rem;              /* większy rozmiar */
+  font-weight: 700;
+  margin: 0;
+  letter-spacing: .5px;
+
+  /* pastelowy gradient z przezroczystością */
+  background: linear-gradient(90deg, rgba(244,114,182,0.7), rgba(192,132,252,0.7));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+
+  /* zamglony cień */
+  text-shadow: 0 4px 12px rgba(192,132,252,0.25),
+               0 2px 6px rgba(236,72,153,0.25);
 }
+
 
 /* 2) Intro (róż) */
 .panel-intro{ background:var(--panel); }
