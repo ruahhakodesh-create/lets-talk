@@ -1,23 +1,23 @@
 <!DOCTYPE html>
-<html lang="pl">
+<html lang="pl" translate="yes">
 <head>
   <meta charset="UTF-8" />
+  <meta http-equiv="Content-Language" content="pl" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Let's Talk</title>
 
-  <!-- Fonty: miękki, zaokrąglony nagłówek + podstawowy tekst -->
+  <!-- Fonty -->
   <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700&family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
-
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-  <!-- STREFA SPOTKAŃ (turkus) -->
-  <section class="panel panel-header" id="top">
+  <!-- STREFA SPOTKAŃ -->
+  <section class="panel panel-header">
     <h1 class="meeting-title">Strefa spotkań</h1>
   </section>
 
-  <!-- Intro (róż) -->
+  <!-- Intro -->
   <section class="panel panel-intro" id="intro">
     <p class="intro-text">
       Czujesz się samotny, wstydzisz się kontaktu, szukasz towarzystwa do rozmowy, potrzebujesz pocieszenia lub wsparcia,
@@ -27,7 +27,7 @@
     </p>
   </section>
 
-  <!-- Start (róż) -->
+  <!-- Start -->
   <section class="panel panel-start" id="start">
     <form id="startForm" autocomplete="off">
       <label for="nick">Twój pseudonim</label>
@@ -43,7 +43,7 @@
     </form>
   </section>
 
-  <!-- CZAT (ta sama strona) -->
+  <!-- Czat -->
   <section class="panel panel-chat hidden" id="chat">
     <div class="chat-top">
       <div>Jesteś: <strong id="meName">—</strong> | Rozmowa z: <strong id="peerName">—</strong></div>
@@ -51,7 +51,7 @@
     </div>
 
     <div id="sys" class="msg"></div>
-    <div id="messages" class="messages"></div>
+    <div id="messages" class="messages notranslate"></div>
 
     <form id="chatForm" autocomplete="off" class="actions">
       <input id="messageInput" type="text" placeholder="Napisz wiadomość…" required />
