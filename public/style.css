@@ -43,3 +43,20 @@ button.danger{background:linear-gradient(135deg,var(--danger),#fb7185)}
 .footer a:hover{color:var(--btn2); filter:brightness(1.2)}
 .footer .sep{margin:0 8px; color:var(--ink)}
 .hidden{display:none !important}
+/* Panel "Strefa spotkań" */
+.panel.meeting {
+  background: #d0f3f3; /* turkusowy odcień */
+  text-align: center;
+}
+
+.meeting-title {
+  font-family: 'Quicksand', 'Baloo 2', cursive, sans-serif;
+  font-size: 42px;
+  font-weight: 700;
+  margin: 0;
+  background: linear-gradient(90deg, #f472b6, #c084fc); /* różowo-fioletowy */
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+}
